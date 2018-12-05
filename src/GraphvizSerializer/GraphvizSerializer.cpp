@@ -33,6 +33,8 @@ GraphvizSerializer & GraphvizSerializer::operator = ( const GraphvizSerializer &
 // Algorithme :
 //
 {
+    //TODO
+    return *this;
 } //----- Fin de operator =
 
 

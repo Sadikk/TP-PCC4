@@ -33,6 +33,8 @@ Request & Request::operator = ( const Request & other )
 // Algorithme :
 //
 {
+    //TODO
+    return *this;
 } //----- Fin de operator =
 
 std::istream& operator>>(std::istream& str, Request& request)
@@ -41,7 +43,7 @@ std::istream& operator>>(std::istream& str, Request& request)
 {
     Request tmp;
     std::string line;
-    if (std::getline(str, line))
+    /*if (std::getline(str, line))
     {
         std::stringstream iss(line);
         if ( std::getline(iss, tmp.ipAddress, ' ')        &&
@@ -61,8 +63,9 @@ std::istream& operator>>(std::istream& str, Request& request)
         {
             str.setstate(std::ios::failbit);
         }
-    }
+    } */
     return str;
+
 } //----- Fin de operator >>
 
 //-------------------------------------------- Constructeurs - destructeur
@@ -99,7 +102,7 @@ Request::~Request ( )
 //------------------------------------------------------------------ PRIVE
 
 //----------------------------------------------------- Méthodes protégées
-void swap(Request& other) throws()
+void Request::swap(Request& other)
 {
 
 }
