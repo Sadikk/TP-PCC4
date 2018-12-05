@@ -11,11 +11,11 @@
 #define REQUEST_H
 
 //--------------------------------------------------- Interfaces utilisées
-
+#include <string>
+using namespace std;
 //------------------------------------------------------------- Constantes
 
 //------------------------------------------------------------------ Types
-
 //------------------------------------------------------------------------
 // Rôle de la classe <Request>
 //
@@ -55,11 +55,13 @@ public:
     // Contrat :
     //
 
-    Request ( );
+    Request ( );  // Constructeur par défaut de Request
     // Mode d'emploi :
     //
     // Contrat :
     //
+
+    Request(string, string, string, string, string, string, int, int, string ,string);
 
     virtual ~Request ( );
     // Mode d'emploi :
@@ -72,6 +74,28 @@ public:
 protected:
 //----------------------------------------------------- Méthodes protégées
     void swap(Request& other);
+
+    string ipAdress;  // Adresse IP de l'emetteur de la requête
+
+    string logUsername; // Nom d'utilisateur du visiteur
+
+    string authUsername; // Nom d'utilisateur (Authenticated User)
+
+    string timestamp; // Date : Changer le type pour Date
+
+    string type; // Type de la requête : GET, POST, OPTIONS
+
+    string url; // URL
+
+    int statusCode; // Return Code HTTP : 200, 404, etc
+
+    int size; // Quantité de données transferées
+
+    string referer; // l'adresse auquel le navigateur se trouvait lorsqu'il a effectué cette requête
+
+    string userAgent; // Identification du client navigateur
+
+
 //----------------------------------------------------- Attributs protégés
 
 };
@@ -79,4 +103,3 @@ protected:
 //-------------------------------- Autres définitions dépendantes de <Request>
 
 #endif // REQUEST_H
-

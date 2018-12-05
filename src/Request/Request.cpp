@@ -53,7 +53,7 @@ std::istream& operator>>(std::istream& str, Request& request)
              std::getline(iss, tmp.type, ']') &&
              std::getline(iss, tmp.url, '"') &&
              std::getline(iss, tmp.statusCode, ' ') &&
-             std::getline(iss, tmp.length, ' ') &&
+             std::getline(iss, tmp.size, ' ') &&
              std::getline(iss, tmp.referer, '"') &&
              std::getline(iss, tmp.userAgent, '"'))
         {
@@ -86,6 +86,27 @@ Request::Request ( )
 #ifdef MAP
     cout << "Appel au constructeur de <Request>" << endl;
 #endif
+} //----- Fin de Request
+
+Request::Request(string ipAdress, string logUsername, string authUsername,
+  string timestamp, string type, string url, int statusCode, int size, string referer, string userAgent)
+// Algorithme :
+//
+{
+#ifdef MAP
+    cout << "Appel au constructeur de <Request>" << endl;
+#endif
+
+this->ipAdress = ipAdress;
+this->logUsername = logUsername;
+this->authUsername = authUsername;
+this->timestamp = timestamp;
+this->type = type;
+this->url = url;
+this->statusCode = statusCode;
+this->size = size;
+this->referer = referer;
+this->userAgent = userAgent;
 } //----- Fin de Request
 
 
