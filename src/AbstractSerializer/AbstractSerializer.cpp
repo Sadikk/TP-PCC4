@@ -29,12 +29,6 @@
 
 
 //------------------------------------------------- Surcharge d'opérateurs
-AbstractSerializer & AbstractSerializer::operator = ( const AbstractSerializer & other )
-// Algorithme :
-//
-{
-} //----- Fin de operator =
-
 
 //-------------------------------------------- Constructeurs - destructeur
 AbstractSerializer::AbstractSerializer ( const AbstractSerializer & other )

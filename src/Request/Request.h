@@ -71,7 +71,7 @@ public:
 
 protected:
 //----------------------------------------------------- Méthodes protégées
-
+    void swap(Request& other);
 //----------------------------------------------------- Attributs protégés
 
 };

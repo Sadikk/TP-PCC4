@@ -11,7 +11,7 @@
 #define GRAPHVIZ_SERIALIZER_H
 
 //--------------------------------------------------- Interfaces utilisées
-
+#include "../AbstractSerializer/AbstractSerializer.h"
 //------------------------------------------------------------- Constantes
 
 //------------------------------------------------------------------ Types
