@@ -89,7 +89,7 @@ Request::Request ( )
 } //----- Fin de Request
 
 Request::Request(string ipAdress, string logUsername, string authUsername,
-  string timestamp, string type, string url, int statusCode, int size, string referer, string userAgent)
+  std::time_t timestamp, string type, string url, int statusCode, int size, string referer, string userAgent)
 // Algorithme :
 //
 {

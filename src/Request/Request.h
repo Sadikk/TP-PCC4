@@ -12,10 +12,11 @@
 
 //--------------------------------------------------- Interfaces utilisées
 #include <string>
-using namespace std;
+#include <ctime>
 //------------------------------------------------------------- Constantes
 
 //------------------------------------------------------------------ Types
+typedef std::string string;
 //------------------------------------------------------------------------
 // Rôle de la classe <Request>
 //
@@ -61,7 +62,7 @@ public:
     // Contrat :
     //
 
-    Request(string, string, string, string, string, string, int, int, string ,string);
+    Request(string, string, string, std::time_t, string, string, int, int, string ,string);
 
     virtual ~Request ( );
     // Mode d'emploi :
@@ -81,7 +82,7 @@ protected:
 
     string authUsername; // Nom d'utilisateur (Authenticated User)
 
-    string timestamp; // Date : Changer le type pour Date
+    std::time_t timestamp; // Date : Changer le type pour Date
 
     string type; // Type de la requête : GET, POST, OPTIONS
 
