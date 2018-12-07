@@ -17,6 +17,8 @@
 
 //------------------------------------------------------------------ Types
 typedef std::string string;
+
+enum HttpMethod {GET, POST, OPTIONS};
 //------------------------------------------------------------------------
 // Rôle de la classe <Request>
 //
@@ -29,12 +31,24 @@ class Request
 
 public:
 //----------------------------------------------------- Méthodes publiques
-    // type Méthode ( liste des paramètres );
-    // Mode d'emploi :
-    //
-    // Contrat :
-    //
 
+    string getIpAddress() const;
+
+    string getLogUsername() const;
+
+    std::time_t getTimestamp() const;
+
+    string getUrl() const;
+
+    int getStatusCode() const;
+
+    int getSize() const;
+
+    string getReferer() const;
+
+    string getUserAgent() const;
+
+    bool isError() const;
 
 //------------------------------------------------- Surcharge d'opérateurs
     Request & operator = ( const Request & other );
@@ -62,7 +76,7 @@ public:
     // Contrat :
     //
 
-    Request(string, string, string, std::time_t, string, string, int, int, string ,string);
+    Request(string, string, string, std::time_t, HttpMethod, string, int, int, string ,string);
 
     virtual ~Request ( );
     // Mode d'emploi :
@@ -76,7 +90,7 @@ protected:
 //----------------------------------------------------- Méthodes protégées
     void swap(Request& other);
 
-    string ipAdress;  // Adresse IP de l'emetteur de la requête
+    string ipAddress;  // Adresse IP de l'emetteur de la requête
 
     string logUsername; // Nom d'utilisateur du visiteur
 
@@ -84,7 +98,7 @@ protected:
 
     std::time_t timestamp; // Date : Changer le type pour Date
 
-    string type; // Type de la requête : GET, POST, OPTIONS
+    HttpMethod method; // Type de la requête : GET, POST, OPTIONS
 
     string url; // URL
 
