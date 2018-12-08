@@ -17,7 +17,7 @@
 
 //------------------------------------------------------------------ Types
 typedef std::string string;
-
+typedef struct tm tm;
 enum HttpMethod {GET, POST, OPTIONS};
 //------------------------------------------------------------------------
 // Rôle de la classe <Request>
@@ -32,23 +32,25 @@ class Request
 public:
 //----------------------------------------------------- Méthodes publiques
 
-    string getIpAddress() const;
+    string GetIpAddress() const;
 
-    string getLogUsername() const;
+    string GetLogUsername() const;
 
-    std::time_t getTimestamp() const;
+    std::time_t GetTimestamp() const;
 
-    string getUrl() const;
+    string GetUrl() const;
 
-    int getStatusCode() const;
+    int GetStatusCode() const;
 
-    int getSize() const;
+    int GetSize() const;
 
-    string getReferer() const;
+    string GetReferer() const;
 
-    string getUserAgent() const;
+    string GetUserAgent() const;
 
     bool isError() const;
+
+    HttpMethod parseMethod(string unparsedMethod) const;
 
 //------------------------------------------------- Surcharge d'opérateurs
     Request & operator = ( const Request & other );
@@ -62,6 +64,9 @@ public:
     //
     // Contrat :
     //
+
+    friend std::ostream& operator<<(std::ostream & str, const Request& request);
+
 
 //-------------------------------------------- Constructeurs - destructeur
     Request ( const Request & other );
@@ -109,6 +114,7 @@ protected:
     string referer; // l'adresse auquel le navigateur se trouvait lorsqu'il a effectué cette requête
 
     string userAgent; // Identification du client navigateur
+
 
 
 //----------------------------------------------------- Attributs protégés

@@ -12,7 +12,7 @@
 
 //-------------------------------------------------------- Include système
 #include <iostream>
-
+#include <sstream>
 //------------------------------------------------------ Include personnel
 #include "Request.h"
 
@@ -21,76 +21,88 @@
 //----------------------------------------------------------------- PUBLIC
 
 //----------------------------------------------------- Méthodes publiques
-string Request::getIpAddress() const
+string Request::GetIpAddress() const
 {
   #ifdef MAP
-      cout << "Appel à la méthode getIpAddress de <Request>" << endl;
+      std::cout << "Appel à la méthode GetIpAddress de <Request>" << "\n";
   #endif
 
   return ipAddress;
 }
 
-string Request::getLogUsername() const
+string Request::GetLogUsername() const
 {
   #ifdef MAP
-      cout << "Appel à la méthode getLogUsername de <Request>" << endl;
+      std::cout << "Appel à la méthode GetLogUsername de <Request>" << "\n";
   #endif
 
   return logUsername;
 }
 
-std::time_t Request::getTimestamp() const
+std::time_t Request::GetTimestamp() const
 {
   #ifdef MAP
-      cout << "Appel à la méthode getTimestamp de <Request>" << endl;
+      std::cout << "Appel à la méthode GetTimestamp de <Request>" << "\n";
   #endif
 
   return timestamp;
 }
 
-string Request::getUrl() const
+string Request::GetUrl() const
 {
   #ifdef MAP
-      cout << "Appel à la méthode getUrl de <Request>" << endl;
+      std::cout << "Appel à la méthode GetUrl de <Request>" << "\n";
   #endif
 
   return url;
 }
 
-int Request::getStatusCode() const
+int Request::GetStatusCode() const
 {
   #ifdef MAP
-      cout << "Appel à la méthode getStatusCode de <Request>" << endl;
+      std::cout << "Appel à la méthode GetStatusCode de <Request>" << "\n";
   #endif
 
   return statusCode;
 }
 
-int Request::getSize() const
+int Request::GetSize() const
 {
   #ifdef MAP
-      cout << "Appel à la méthode getSize de <Request>" << endl;
+      std::cout << "Appel à la méthode GetSize de <Request>" << "\n";
   #endif
 
   return size;
 }
 
-string Request::getReferer() const
+string Request::GetReferer() const
 {
   #ifdef MAP
-      cout << "Appel à la méthode getReferer de <Request>" << endl;
+      std::cout << "Appel à la méthode GetReferer de <Request>" << "\n";
   #endif
 
   return referer;
 }
 
-string Request::getUserAgent() const
+string Request::GetUserAgent() const
 {
   #ifdef MAP
-      cout << "Appel à la méthode getUserAgent de <Request>" << endl;
+      std::cout << "Appel à la méthode GetUserAgent de <Request>" << "\n";
   #endif
 
   return userAgent;
+}
+
+HttpMethod Request::parseMethod(string unparsedMethod) const {
+  if(unparsedMethod == "GET"){
+    return GET;
+  }
+  else if(unparsedMethod == "POST"){
+    return POST;
+  }
+  else if(unparsedMethod == "OPTIONS"){
+    return OPTIONS;
+  }
 }
 //------------------------------------------------- Surcharge d'opérateurs
 Request & Request::operator = ( const Request & other )
@@ -113,42 +125,77 @@ std::istream& operator>>(std::istream& str, Request& request)
 // Algorithme :
 //
 {
-  /*
+
     Request tmp;
     std::string line;
+
+    string unparsedMethod;
+    string tmpStatusCode;
+    string tmpSize;
+    string tmpTimeStamp;
+    string placeholder;
     if (std::getline(str, line))
     {
         std::stringstream iss(line);
         if ( std::getline(iss, tmp.ipAddress, ' ')        &&
              std::getline(iss, tmp.logUsername, ' ')         &&
              std::getline(iss, tmp.authUsername, ' ')      &&
-             std::getline(iss, tmp.timestamp, '[') &&
-             std::getline(iss, tmp.method, ']') &&
+             std::getline(iss, tmpTimeStamp, '"') &&
+             std::getline(iss, unparsedMethod, ' ') &&
              std::getline(iss, tmp.url, '"') &&
-             std::getline(iss, tmp.statusCode, ' ') &&
-             std::getline(iss, tmp.size, ' ') &&
+             std::getline(iss, placeholder, ' ') && // espace entre URL et statusCode
+             std::getline(iss, tmpStatusCode, ' ') &&
+             std::getline(iss, tmpSize, '"') &&
              std::getline(iss, tmp.referer, '"') &&
+             std::getline(iss, placeholder, '"') && // " entre referer et userAgent
              std::getline(iss, tmp.userAgent, '"'))
         {
-            //data.swap(tmp);
+            struct tm tm;
+            strptime(tmpTimeStamp.c_str(), "[%d/%b/%Y :%H:%M:%S %Z]", &tm);
+            tmp.timestamp = mktime(&tm);
+            tmp.statusCode = std::stoi(tmpStatusCode);
+            tmp.size = std::stoi(tmpSize);
+            if(unparsedMethod == "GET"){
+              tmp.method = GET;
+            }
+            else if(unparsedMethod == "POST"){
+              tmp.method =  POST;
+            }
+            else if(unparsedMethod == "OPTIONS"){
+              tmp.method = OPTIONS;
+            }
             request.swap(tmp);
         }
         else
         {
             str.setstate(std::ios::failbit);
         }
+
     }
     return str;
-*/
 } //----- Fin de operator >>
 
+
+  std::ostream& operator<<(std::ostream & str, const Request& request){
+    std::cout << "Ip Adress: " << request.ipAddress << "\n";
+    std::cout << "Log Username: " << request.logUsername << "\n";
+    std::cout << "authUsername: " << request.authUsername << "\n";
+    std::cout << "timestamp: " << request.timestamp << "\n";
+    std::cout << "Method(ENUM Value)" << request.method << "\n";
+    std::cout << "URL: "<< request.url << "\n";
+    std::cout << "StatusCode: " << request.statusCode << "\n";
+    std::cout << "Size: " << request.size << "\n";
+    std::cout << "Referer: " << request.referer << "\n";
+    std::cout << "UserAgent: " << request.userAgent << "\n";
+    return str;
+  }
 //-------------------------------------------- Constructeurs - destructeur
 Request::Request ( const Request & other )
 // Algorithme :
 //
 {
 #ifdef MAP
-    cout << "Appel au constructeur de copie de <Request>" << endl;
+    std::cout << "Appel au constructeur de copie de <Request>" << "\n";
 #endif
 } //----- Fin de Request (constructeur de copie)
 
@@ -158,7 +205,7 @@ Request::Request ( )
 //
 {
 #ifdef MAP
-    cout << "Appel au constructeur de <Request>" << endl;
+    std::cout << "Appel au constructeur de <Request>" << "\n";
 #endif
 } //----- Fin de Request
 
@@ -168,7 +215,7 @@ Request::Request(string ipAddress, string logUsername, string authUsername,
 //
 {
 #ifdef MAP
-    cout << "Appel au constructeur de <Request>" << endl;
+    std::cout << "Appel au constructeur de <Request>" << "\n";
 #endif
 
 this->ipAddress = ipAddress;
@@ -189,7 +236,7 @@ Request::~Request ( )
 //
 {
 #ifdef MAP
-    cout << "Appel au destructeur de <Request>" << endl;
+    std::cout << "Appel au destructeur de <Request>" << "\n";
 #endif
 } //----- Fin de ~Request
 
@@ -199,5 +246,5 @@ Request::~Request ( )
 //----------------------------------------------------- Méthodes protégées
 void Request::swap(Request& other)
 {
-  
+  *this = other;
 }
