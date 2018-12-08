@@ -8,8 +8,8 @@ TEST_FOLDER         = unit_tests
 EXEC                = analog
 
 MAIN_TEST_MODULE    = Main
-MODULES_NAME        = GraphvizSerializer AbstractSerializer Request
-MODULES_NAME_TEST   =
+MODULES_NAME        = GraphvizSerializer AbstractSerializer Cache
+MODULES_NAME_TEST   = Cache
 
 ADDITIONAL_FOLDER   =
 
