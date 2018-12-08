@@ -4,7 +4,7 @@
 
 BUILD_FOLDER        = bin
 SRC_FOLDER          = src
-TEST_FOLDER         = Tests
+TEST_FOLDER         = unit_tests
 EXEC                = analog
 
 MAIN_TEST_MODULE    = Main
