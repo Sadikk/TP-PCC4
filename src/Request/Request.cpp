@@ -134,6 +134,7 @@ std::istream& operator>>(std::istream& str, Request& request)
     string tmpSize;
     string tmpTimeStamp;
     string placeholder;
+
     if (std::getline(str, line))
     {
         std::stringstream iss(line);
@@ -155,15 +156,7 @@ std::istream& operator>>(std::istream& str, Request& request)
             tmp.timestamp = mktime(&tm);
             tmp.statusCode = std::stoi(tmpStatusCode);
             tmp.size = std::stoi(tmpSize);
-            if(unparsedMethod == "GET"){
-              tmp.method = GET;
-            }
-            else if(unparsedMethod == "POST"){
-              tmp.method =  POST;
-            }
-            else if(unparsedMethod == "OPTIONS"){
-              tmp.method = OPTIONS;
-            }
+            tmp.method = request.parseMethod(unparsedMethod);
             request.swap(tmp);
         }
         else
