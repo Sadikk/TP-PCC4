@@ -43,6 +43,27 @@ Cas limites :
  - pas de requetes à exporter:  générer un graphe vide (à définir selon syntaxe GraphViz)
 
 Cas d'erreurs :
-- 
-####
+ - ?
+ 
+#### HourFilter
 
+Cas normaux :
+ - Filtre une requête selon un intervalle horaire [h,h'[
+  
+Cas limites : 
+ - ?
+
+Cas d'erreurs :
+ - ?
+ 
+ #### ExtensionFilter
+ 
+ Cas normaux :
+  - Filtre une requête selon l'extension de la resource demandée
+   
+ Cas limites : 
+  - L'URI ne possède pas d'extension : filtre validée
+ 
+ Cas d'erreurs :
+  - ?
+  
