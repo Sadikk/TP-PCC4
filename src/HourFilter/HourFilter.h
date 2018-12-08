@@ -11,7 +11,8 @@
 #define ABSTRACT_FILTER_H
 
 //--------------------------------------------------- Interfaces utilisées
-#include "AbstractFilter.h"
+#include "../AbstractFilter/AbstractFilter.h"
+#include "../Request/Request.h"
 //------------------------------------------------------------- Constantes
 
 //------------------------------------------------------------------ Types
@@ -28,7 +29,7 @@ class HourFilter
 
 public:
 //----------------------------------------------------- Méthodes publiques
-    bool Check(Request &request) const;
+    bool Check(Request &request, int targetHour) const;
 
 
 //------------------------------------------------- Surcharge d'opérateurs
