@@ -167,7 +167,7 @@ std::istream& operator>>(std::istream& str, Request& request)
              std::getline(iss, tmp.userAgent, '"'))
         {
             struct tm tm;
-            strptime(tmpTimeStamp.c_str(), "[%d/%b/%Y :%H:%M:%S %Z]", &tm);
+            strptime(tmpTimeStamp.c_str(), "[%d/%b/%Y :%H:%M:%S %z]", &tm);
             tmp.timestamp = mktime(&tm);
             tmp.statusCode = std::stoi(tmpStatusCode);
             tmp.size = std::stoi(tmpSize);
@@ -187,7 +187,7 @@ std::istream& operator>>(std::istream& str, Request& request)
   std::ostream& operator<<(std::ostream & str, const Request& request){
     struct tm* timeinfo = localtime(&request.timestamp);
     char stringedtime[30];
-    strftime(stringedtime,30,"%d/%b/%Y :%H:%M:%S +",timeinfo);
+    strftime(stringedtime,30,"%d/%b/%Y :%H:%M:%S %z",timeinfo);
     std::cout <<request.ipAddress<<" ";
     std::cout <<request.logUsername<<" ";
     std::cout <<request.authUsername<<" ";
