@@ -18,7 +18,7 @@
 //------------------------------------------------------------------ Types
 typedef std::string string;
 typedef struct tm tm;
-enum HttpMethod {GET, POST, OPTIONS};
+enum HttpMethod {GET, POST, OPTIONS , HEAD, PUT, DELETE, CONNECT, TRACE, PATCH};
 //------------------------------------------------------------------------
 // Rôle de la classe <Request>
 //
@@ -51,6 +51,8 @@ public:
     bool isError() const;
 
     HttpMethod parseMethod(string unparsedMethod) const;
+
+    string unparseMethod(HttpMethod parsedMethod) const;
 
 //------------------------------------------------- Surcharge d'opérateurs
     Request & operator = ( const Request & other );
@@ -93,7 +95,7 @@ public:
 
 protected:
 //----------------------------------------------------- Méthodes protégées
-    void swap(Request& other);
+    void swap(Request& first, Request& second);
 
     string ipAddress;  // Adresse IP de l'emetteur de la requête
 

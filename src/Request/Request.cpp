@@ -23,73 +23,41 @@
 //----------------------------------------------------- Méthodes publiques
 string Request::GetIpAddress() const
 {
-  #ifdef MAP
-      std::cout << "Appel à la méthode GetIpAddress de <Request>" << "\n";
-  #endif
-
   return ipAddress;
 }
 
 string Request::GetLogUsername() const
 {
-  #ifdef MAP
-      std::cout << "Appel à la méthode GetLogUsername de <Request>" << "\n";
-  #endif
-
   return logUsername;
 }
 
 std::time_t Request::GetTimestamp() const
 {
-  #ifdef MAP
-      std::cout << "Appel à la méthode GetTimestamp de <Request>" << "\n";
-  #endif
-
   return timestamp;
 }
 
 string Request::GetUrl() const
 {
-  #ifdef MAP
-      std::cout << "Appel à la méthode GetUrl de <Request>" << "\n";
-  #endif
-
   return url;
 }
 
 int Request::GetStatusCode() const
 {
-  #ifdef MAP
-      std::cout << "Appel à la méthode GetStatusCode de <Request>" << "\n";
-  #endif
-
   return statusCode;
 }
 
 int Request::GetSize() const
 {
-  #ifdef MAP
-      std::cout << "Appel à la méthode GetSize de <Request>" << "\n";
-  #endif
-
   return size;
 }
 
 string Request::GetReferer() const
 {
-  #ifdef MAP
-      std::cout << "Appel à la méthode GetReferer de <Request>" << "\n";
-  #endif
-
   return referer;
 }
 
 string Request::GetUserAgent() const
 {
-  #ifdef MAP
-      std::cout << "Appel à la méthode GetUserAgent de <Request>" << "\n";
-  #endif
-
   return userAgent;
 }
 
@@ -102,6 +70,56 @@ HttpMethod Request::parseMethod(string unparsedMethod) const {
   }
   else if(unparsedMethod == "OPTIONS"){
     return OPTIONS;
+  }
+  else if(unparsedMethod == "HEAD"){
+    return HEAD;
+  }
+  else if(unparsedMethod == "PUT"){
+    return PUT;
+  }
+  else if(unparsedMethod == "DELETE"){
+    return DELETE;
+  }
+  else if(unparsedMethod == "CONNECT"){
+    return CONNECT;
+  }
+  else if(unparsedMethod == "TRACE"){
+    return TRACE;
+  }
+  else if(unparsedMethod == "PATCH"){
+    return PATCH;
+  }
+}
+
+string Request::unparseMethod(HttpMethod parsedMethod) const {
+  switch(parsedMethod){
+    case 0 :
+    return "GET";
+    break;
+    case 1 :
+    return "POST";
+    break;
+    case 2 :
+    return "OPTIONS";
+    break;
+    case 3 :
+    return "HEAD";
+    break;
+    case 4 :
+    return "PUT";
+    break;
+    case 5 :
+    return "DELETE";
+    break;
+    case 6 :
+    return "CONNECT";
+    break;
+    case 7 :
+    return "TRACE";
+    break;
+    case 8 :
+    return "PATCH";
+    break;
   }
 }
 //------------------------------------------------- Surcharge d'opérateurs
@@ -125,16 +143,13 @@ std::istream& operator>>(std::istream& str, Request& request)
 // Algorithme :
 //
 {
-
     Request tmp;
     std::string line;
-
     string unparsedMethod;
     string tmpStatusCode;
     string tmpSize;
     string tmpTimeStamp;
     string placeholder;
-
     if (std::getline(str, line))
     {
         std::stringstream iss(line);
@@ -157,7 +172,7 @@ std::istream& operator>>(std::istream& str, Request& request)
             tmp.statusCode = std::stoi(tmpStatusCode);
             tmp.size = std::stoi(tmpSize);
             tmp.method = request.parseMethod(unparsedMethod);
-            request.swap(tmp);
+            request.swap(request, tmp);
         }
         else
         {
@@ -170,16 +185,20 @@ std::istream& operator>>(std::istream& str, Request& request)
 
 
   std::ostream& operator<<(std::ostream & str, const Request& request){
-    std::cout << "Ip Adress: " << request.ipAddress << "\n";
-    std::cout << "Log Username: " << request.logUsername << "\n";
-    std::cout << "authUsername: " << request.authUsername << "\n";
-    std::cout << "timestamp: " << request.timestamp << "\n";
-    std::cout << "Method(ENUM Value)" << request.method << "\n";
-    std::cout << "URL: "<< request.url << "\n";
-    std::cout << "StatusCode: " << request.statusCode << "\n";
-    std::cout << "Size: " << request.size << "\n";
-    std::cout << "Referer: " << request.referer << "\n";
-    std::cout << "UserAgent: " << request.userAgent << "\n";
+    struct tm* timeinfo = localtime(&request.timestamp);
+    char stringedtime[30];
+    strftime(stringedtime,30,"%d/%b/%Y :%H:%M:%S +",timeinfo);
+    std::cout <<request.ipAddress<<" ";
+    std::cout <<request.logUsername<<" ";
+    std::cout <<request.authUsername<<" ";
+    //std::cout << "[" << request.timestamp << "] ";
+    std::cout << "[" << stringedtime << "] ";
+    std::cout << '"' << request.unparseMethod(request.method) << " ";
+    std::cout <<request.url << '"'+' ';
+    std::cout <<request.statusCode << " ";
+    std::cout <<request.size << " ";
+    std::cout <<'"'<<request.referer << '"';
+    std::cout <<'"'<< request.userAgent <<'"'<<"\n";
     return str;
   }
 //-------------------------------------------- Constructeurs - destructeur
@@ -205,7 +224,6 @@ Request::Request ( )
 Request::Request(string ipAddress, string logUsername, string authUsername,
   std::time_t timestamp, HttpMethod method, string url, int statusCode, int size, string referer, string userAgent)
 // Algorithme :
-//
 {
 #ifdef MAP
     std::cout << "Appel au constructeur de <Request>" << "\n";
@@ -233,11 +251,20 @@ Request::~Request ( )
 #endif
 } //----- Fin de ~Request
 
-
 //------------------------------------------------------------------ PRIVE
 
 //----------------------------------------------------- Méthodes protégées
-void Request::swap(Request& other)
+void Request::swap(Request& first, Request& second)
 {
-  *this = other;
+std::swap(first.ipAddress, second.ipAddress);
+std::swap(first.logUsername, second.logUsername);
+std::swap(first.authUsername, second.authUsername);
+std::swap(first.timestamp, second.timestamp);
+std::swap(first.method, second.method);
+std::swap(first.url, second.url);
+std::swap(first.statusCode, second.statusCode);
+std::swap(first.size, second.size);
+std::swap(first.referer, second.referer);
+std::swap(first.userAgent, second.userAgent);
+
 }
