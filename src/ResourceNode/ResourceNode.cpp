@@ -107,7 +107,6 @@ void swap(ResourceNode& first, ResourceNode& second)
 
 std::ostream& operator<<(std::ostream& os, const ResourceNode& node)
 {
-
-    os << "node" << node.GetId() << " [label=\"" << node.GetLabel() << "\"];" << std::endl;
+    os << "\tnode" << node.GetId() << " [label=\"" << node.GetLabel() << "\"]";
     return os;
 }

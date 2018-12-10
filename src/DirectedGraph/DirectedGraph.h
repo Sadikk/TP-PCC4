@@ -43,7 +43,7 @@ public:
     //          - from : objet de départ
     //          - to : objet d'arrivée
     // Contrat :
-    //
+    //      from et to sont des objets stables non nuls
 
     void Serialize(std::ostream& os) const;
     // Mode d'emploi :
@@ -54,6 +54,12 @@ public:
     int GetDegree(T & node) const;
     // Mode d'emploi :
     //      Retourne le degré(valence) d'un noeud du graphe
+    // Contrat :
+    //
+
+    int Size() const;
+    // Mode d'emploi :
+    //      Retourne le nombre de noeuds ayant au moins un noeud enfant
     // Contrat :
     //
 
