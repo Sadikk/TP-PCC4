@@ -53,7 +53,7 @@ public:
     // Contrat :
     //
 
-    HourFilter (int startHour);
+    HourFilter (int start, int end);
 
     virtual ~HourFilter ( );
     // Mode d'emploi :
@@ -69,7 +69,7 @@ protected:
 //----------------------------------------------------- Attributs protégés
 
 int startHour;
-int endHour;
+int endHour = -1;
 
 };
 

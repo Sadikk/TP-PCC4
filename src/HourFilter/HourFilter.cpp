@@ -56,13 +56,15 @@ HourFilter::HourFilter ( )
 #endif
 } //----- Fin de HourFilter
 
-HourFilter::HourFilter ( int start ) : startHour(start), endHour(start+1)
+HourFilter::HourFilter ( int start, int end ) : startHour(start)
 // Algorithme :
 //
 {
 #ifdef MAP
     cout << "Appel au constructeur de <HourFilter>" << endl;
 #endif
+
+(endHour == -1) ? (endHour = startHour+1) : (endHour);
 } //----- Fin de HourFilter
 
 
