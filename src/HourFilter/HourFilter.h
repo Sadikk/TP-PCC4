@@ -18,6 +18,7 @@
 //------------------------------------------------------------------ Types
 
 //------------------------------------------------------------------------
+// Rôle de la classe <HourFilter>
 // Cette classe est instanciée avec une heure donnée startHour et vérifie si une request
 // a eu lieu entre startHour et startHour + 1.
 //------------------------------------------------------------------------
