@@ -14,7 +14,7 @@
 
 //------------------------------------------------------ Include personnel
 #include "ResourceNode.h"
-
+#include "../StringCache/StringCache.h"
 //------------------------------------------------------------- Constantes
 
 //----------------------------------------------------------------- PUBLIC
@@ -37,8 +37,7 @@ std::string ResourceNode::GetLabel() const
     }
     else
     {
-        //TODO use cache to get string associated with identifier
-        return std::to_string(id);
+        return StringCache::GetInstance().Get(id);
     }
 }
 
