@@ -21,8 +21,9 @@ typedef struct tm tm;
 enum HttpMethod {GET, POST, OPTIONS , HEAD, PUT, DELETE, CONNECT, TRACE, PATCH};
 //------------------------------------------------------------------------
 // Rôle de la classe <Request>
-//Cette classe répresente chaque ligne dans le fichier de logs. Elle contient toutes les méthodes
-//qui permettent de sérializer e desérializer une Request.
+
+// Classe représentant une requête HTTP telle que définie par le format de log
+// Apache/Nginx
 //------------------------------------------------------------------------
 
 class Request
@@ -31,31 +32,71 @@ class Request
 
 public:
 //----------------------------------------------------- Méthodes publiques
+    bool IsError() const;
+    // Mode d'emploi :
+    //      Indique si la requête est en échec ou non
+    //      Retourne :
+    //          - true si la requête est en échec
+    //          - false si la requête est en succès
+    // Contrat :
+    //
 
     string GetIpAddress() const;
+    // Mode d'emploi :
+    //      Getter de l'adresse ip
+    // Contrat :
+    //
 
     string GetLogUsername() const;
+    // Mode d'emploi :
+    //      Getter du nom d'utilisateur log
+    // Contrat :
+    //
+
+    string GetAuthUsername() const;
+    // Mode d'emploi :
+    //      Getter du nom d'utilisateur auth
+    // Contrat :
+    //
 
     std::time_t GetTimestamp() const;
+    // Mode d'emploi :
+    //      Getter du timestamp
+    // Contrat :
+    //
 
     string GetUrl() const;
+    // Mode d'emploi :
+    //      Getter de l'URL cible
+    // Contrat :
+    //
 
     int GetStatusCode() const;
+    // Mode d'emploi :
+    //      Getter du code de statut
+    // Contrat :
+    //
 
     int GetSize() const;
+    // Mode d'emploi :
+    //      Getter de la taille de la requête (en bytes)
+    // Contrat :
+    //
 
     string GetReferer() const;
+    // Mode d'emploi :
+    //      Getter du referer
+    // Contrat :
+    //
 
     string GetUserAgent() const;
-
-    bool isError() const;
-
-    HttpMethod parseMethod(string unparsedMethod) const;
-
-    string unparseMethod(HttpMethod parsedMethod) const;
+    // Mode d'emploi :
+    //      Getter du user agent
+    // Contrat :
+    //
 
 //------------------------------------------------- Surcharge d'opérateurs
-    Request & operator = ( const Request & other );
+    Request & operator = ( Request other );
     // Mode d'emploi :
     //
     // Contrat :
@@ -77,13 +118,13 @@ public:
     // Contrat :
     //
 
-    Request ( );  // Constructeur par défaut de Request
+    Request(string ipAddress = "", string logUsername = "", string authUsername = "", std::time_t tstamp = 0,
+            HttpMethod httpMethod = GET, string uri = "", int status = 200, int length = 0, string ref = "" ,
+            string uAgent = "");
     // Mode d'emploi :
-    //
+    //      Constructeur
     // Contrat :
     //
-
-    Request(string, string, string, std::time_t, HttpMethod, string, int, int, string ,string);
 
     virtual ~Request ( );
     // Mode d'emploi :
@@ -95,8 +136,13 @@ public:
 
 protected:
 //----------------------------------------------------- Méthodes protégées
+    HttpMethod parseMethod(string unparsedMethod) const;
+
+    string unparseMethod(HttpMethod parsedMethod) const;
+
     friend void swap(Request& first, Request& second);
 
+//----------------------------------------------------- Attributs protégés
     string ipAddress;  // Adresse IP de l'emetteur de la requête
 
     string logUsername; // Nom d'utilisateur du visiteur
@@ -116,11 +162,6 @@ protected:
     string referer; // l'adresse auquel le navigateur se trouvait lorsqu'il a effectué cette requête
 
     string userAgent; // Identification du client navigateur
-
-
-
-//----------------------------------------------------- Attributs protégés
-
 };
 
 //-------------------------------- Autres définitions dépendantes de <Request>
