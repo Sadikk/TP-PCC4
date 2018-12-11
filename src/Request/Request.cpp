@@ -169,7 +169,7 @@ std::istream& operator>>(std::istream& str, Request& request)
       std::cout << request.url << '"' + ' ';
       std::cout << request.statusCode << " ";
       std::cout << request.size << " ";
-      std::cout << '"' << request.referer << '"';
+      std::cout << '"' << request.referer << "\" ";
       std::cout << '"' << request.userAgent << '"' << "\n";
       return str;
   }

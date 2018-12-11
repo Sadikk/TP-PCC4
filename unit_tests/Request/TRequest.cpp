@@ -62,10 +62,9 @@ static void testParsing()
     std::stringstream out;
 
     std::vector<std::string> lines = {
-            "64.242.88.10 - - [07/Mar/2004:16:05:49 -0800] \"GET /twiki/bin/edit/Main/Double_bounce_sender?topicparent=Main.ConfigurationVariables HTTP/1.1\" 401 12846",
-            "64.242.88.10 - - [07/Mar/2004:17:42:15 -0800] \"GET /twiki/bin/oops/TWiki/RichardDonkin?template=oopsmore¶m1=1.2¶m2=1.2 HTTP/1.1\" 200 11281",
-            "lj1090.inktomisearch.com - - [07/Mar/2004:17:18:41 -0800] \"GET /twiki/bin/view/Main/LondonOffice HTTP/1.0\" 200 3860",
-            "64.242.88.10 - - [07/Mar/2004:16:52:35 -0800] \"POST /twiki/bin/edit/Main/Flush_service_name?topicparent=Main.ConfigurationVariables HTTP/1.1\" 401 12851"
+            "192.168.0.4 - - [08/Sep/2012:11:19:17 +0200] \"GET /stages/Listestage.php HTTP/1.1\" 200 74694 \"http://intranet-if.insa-lyon.fr/SiteWebIF/Intranet-etudiant.php\" \"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.1 (KHTML, like Gecko) Chrome/21.0.1180.89 Safari/537.1\"",
+            "192.168.0.5 - - [08/Sep/2012:11:19:21 +0200] \"GET /temps/3IF1.ics HTTP/1.1\" 304 - \"-\" \"DataAccess/1.0 (8C148)\"",
+            "192.168.0.8 - - [08/Sep/2012:11:23:46 +0200] \"GET /notesif/ HTTP/1.1\" 302 - \"http://intranet-if.insa-lyon.fr/SiteWebIF/Intranet-etudiant.php\" \"Mozilla/5.0 (Windows; U; Windows NT 6.1; fr; rv:1.9.2.10) Gecko/20100914 Firefox/3.6.10\""
     };
 
     for (std::string line : lines)
