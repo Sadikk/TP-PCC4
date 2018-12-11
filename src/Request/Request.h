@@ -21,8 +21,8 @@ typedef struct tm tm;
 enum HttpMethod {GET, POST, OPTIONS , HEAD, PUT, DELETE, CONNECT, TRACE, PATCH};
 //------------------------------------------------------------------------
 // Rôle de la classe <Request>
-//
-//
+//Cette classe répresente chaque ligne dans le fichier de logs. Elle contient toutes les méthodes
+//qui permettent de sérializer e desérializer une Request.
 //------------------------------------------------------------------------
 
 class Request
@@ -95,7 +95,7 @@ public:
 
 protected:
 //----------------------------------------------------- Méthodes protégées
-    void swap(Request& first, Request& second);
+    friend void swap(Request& first, Request& second);
 
     string ipAddress;  // Adresse IP de l'emetteur de la requête
 

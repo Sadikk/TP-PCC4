@@ -94,32 +94,23 @@ HttpMethod Request::parseMethod(string unparsedMethod) const {
 string Request::unparseMethod(HttpMethod parsedMethod) const {
   switch(parsedMethod){
     case 0 :
-    return "GET";
-    break;
+      return "GET";
     case 1 :
-    return "POST";
-    break;
+      return "POST";
     case 2 :
-    return "OPTIONS";
-    break;
+      return "OPTIONS";
     case 3 :
-    return "HEAD";
-    break;
+      return "HEAD";
     case 4 :
-    return "PUT";
-    break;
+      return "PUT";
     case 5 :
-    return "DELETE";
-    break;
+      return "DELETE";
     case 6 :
-    return "CONNECT";
-    break;
+      return "CONNECT";
     case 7 :
-    return "TRACE";
-    break;
+      return "TRACE";
     case 8 :
-    return "PATCH";
-    break;
+      return "PATCH";
   }
 }
 //------------------------------------------------- Surcharge d'opérateurs
