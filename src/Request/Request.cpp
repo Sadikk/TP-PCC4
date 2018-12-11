@@ -94,12 +94,7 @@ HttpMethod Request::parseMethod(string unparsedMethod) const {
 string Request::unparseMethod(HttpMethod parsedMethod) const {
   switch(parsedMethod){
     case 0 :
-<<<<<<< HEAD
       return "GET";
-=======
-        return "GET";
-    break;
->>>>>>> e3476c8b2ecb0799f8167e93a07fe52c510e8641
     case 1 :
       return "POST";
     case 2 :
