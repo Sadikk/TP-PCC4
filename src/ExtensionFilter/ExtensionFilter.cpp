@@ -29,10 +29,7 @@ bool ExtensionFilter::Check(Request &request) const{
   std::string url = request.GetUrl();
   int hasExtension = url.find(extension);
   // La méthode find renvoye -1 dans le cas ou elle ne trouve rien
-  if(hasExtension != -1){
-    return true;
-  }
-  return false;
+  return hasExtension != -1;
 
 }
 //------------------------------------------------- Surcharge d'opérateurs
@@ -57,15 +54,13 @@ ExtensionFilter::ExtensionFilter ( )
 #endif
 } //----- Fin de ExtensionFilter
 
-ExtensionFilter::ExtensionFilter (string extension )
+ExtensionFilter::ExtensionFilter (string ext) : extension(ext)
 // Algorithme :
 //
 {
 #ifdef MAP
     cout << "Appel au constructeur de <ExtensionFilter>" << endl;
 #endif
-
-this->extension = extension;
 } //----- Fin de ExtensionFilter
 
 
