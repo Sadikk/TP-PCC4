@@ -21,25 +21,18 @@
 
 //----------------------------------------------------- Méthodes publiques
 bool ExtensionFilter::Check(Request &request) const{
-
+//Renvoie true si l'extension a été trouvé
   #ifdef MAP
       cout << "Appel a la methode Check de <ExtensionFilter>" << endl;
   #endif
 
   std::string url = request.GetUrl();
-  std::string imageExtension = ".jpg";
-  std::string javascriptExtension = ".js";
-  std::string cssExtension = ".css";
-  int hasImageExtension = url.find(imageExtension);
-  int hasJavascriptExtension = url.find(javascriptExtension);
-  int hasCssExtension = url.find(cssExtension);
+  int hasExtension = url.find(extension);
   // La méthode find renvoye -1 dans le cas ou elle ne trouve rien
-  if(hasImageExtension!= -1 || hasJavascriptExtension!= -1 || hasCssExtension!= -1){
+  if(hasExtension != -1){
     return true;
   }
-  else{
-    return false;
-  }
+  return false;
 
 }
 //------------------------------------------------- Surcharge d'opérateurs
@@ -63,6 +56,18 @@ ExtensionFilter::ExtensionFilter ( )
     cout << "Appel au constructeur de <ExtensionFilter>" << endl;
 #endif
 } //----- Fin de ExtensionFilter
+
+ExtensionFilter::ExtensionFilter (string extension )
+// Algorithme :
+//
+{
+#ifdef MAP
+    cout << "Appel au constructeur de <ExtensionFilter>" << endl;
+#endif
+
+this->extension = extension;
+} //----- Fin de ExtensionFilter
+
 
 
 ExtensionFilter::~ExtensionFilter ( )

@@ -21,7 +21,7 @@
 //----------------------------------------------------------------- PUBLIC
 
 //----------------------------------------------------- Méthodes publiques
-bool HourFilter::Check(Request &request, int targetHour) const{
+bool HourFilter::Check(Request &request) const{
 //Cette méthode vérifier si le Request request a été fait dans l'intervalle
 // [targetHour, targetHour+1[
 // On suppose que c'est une heure du jour courant
@@ -31,10 +31,7 @@ bool HourFilter::Check(Request &request, int targetHour) const{
   long timestamp = request.GetTimestamp();
   struct tm *timeinfo = localtime(&timestamp);
   int request_time = timeinfo->tm_hour;
-  int hourMax = targetHour;
-  int hourMin = targetHour + 1;
-
-  return request_time > hourMin || request_time < hourMax;
+  return request_time > startHour && request_time < endHour;
 
 }
 //------------------------------------------------- Surcharge d'opérateurs
@@ -59,6 +56,17 @@ HourFilter::HourFilter ( )
 #endif
 } //----- Fin de HourFilter
 
+HourFilter::HourFilter ( int startHour )
+// Algorithme :
+//
+{
+#ifdef MAP
+    cout << "Appel au constructeur de <HourFilter>" << endl;
+#endif
+this->startHour = startHour;
+this->endHour = startHour + 1;
+} //----- Fin de HourFilter
+
 
 HourFilter::~HourFilter ( )
 // Algorithme :
@@ -71,5 +79,7 @@ HourFilter::~HourFilter ( )
 
 
 //------------------------------------------------------------------ PRIVE
+
+
 
 //----------------------------------------------------- Méthodes protégées

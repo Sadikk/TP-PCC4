@@ -19,8 +19,10 @@
 
 //------------------------------------------------------------------------
 // Rôle de la classe <ExtensionFilter>
-//
-//
+//Cette classe est instanciée avec une extension donnée e possede une seule méthode
+//Check qui vérifie si une Request donnée possède l'extension
+// Ex : ExtensionFilter jsFilter(".js") et jsFilter.Check(Request) vérifie
+//si Request possède l'extension .js
 //------------------------------------------------------------------------
 
 class ExtensionFilter
@@ -53,6 +55,8 @@ public:
     // Contrat :
     //
 
+    ExtensionFilter (string extension);
+
     virtual ~ExtensionFilter ( );
     // Mode d'emploi :
     //
@@ -65,6 +69,7 @@ protected:
 //----------------------------------------------------- Méthodes protégées
 
 //----------------------------------------------------- Attributs protégés
+string extension;
 
 };
 

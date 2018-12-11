@@ -18,9 +18,8 @@
 //------------------------------------------------------------------ Types
 
 //------------------------------------------------------------------------
-// Rôle de la classe <HourFilter>
-//
-//
+// Cette classe est instanciée avec une heure donnée startHour et vérifie si une request
+// a eu lieu entre startHour et startHour + 1.
 //------------------------------------------------------------------------
 
 class HourFilter
@@ -29,7 +28,7 @@ class HourFilter
 
 public:
 //----------------------------------------------------- Méthodes publiques
-    bool Check(Request &request, int targetHour) const;
+    bool Check(Request &request) const;
 
 
 //------------------------------------------------- Surcharge d'opérateurs
@@ -53,6 +52,8 @@ public:
     // Contrat :
     //
 
+    HourFilter (int startHour);
+
     virtual ~HourFilter ( );
     // Mode d'emploi :
     //
@@ -65,6 +66,9 @@ protected:
 //----------------------------------------------------- Méthodes protégées
 
 //----------------------------------------------------- Attributs protégés
+
+int startHour;
+int endHour;
 
 };
 
