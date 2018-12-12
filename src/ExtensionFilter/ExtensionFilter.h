@@ -25,7 +25,7 @@
 //si Request possède l'extension .js
 //------------------------------------------------------------------------
 
-class ExtensionFilter
+class ExtensionFilter : public AbstractFilter
 {
 //----------------------------------------------------------------- PUBLIC
 
