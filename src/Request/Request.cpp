@@ -142,10 +142,17 @@ std::istream& operator>>(std::istream& str, Request& request)
             std::getline(iss, placeholder, '"') && // " entre referer et userAgent
             std::getline(iss, tmp.userAgent, '"')) {
             struct tm tm;
-            strptime(tmpTimeStamp.c_str(), "[%d/%b/%Y :%H:%M:%S %z]", &tm);
+            strptime(tmpTimeStamp.c_str(), "[%d/%b/%Y:%H:%M:%S %z]", &tm);
             tmp.timestamp = mktime(&tm);
             tmp.statusCode = std::stoi(tmpStatusCode);
-            tmp.size = std::stoi(tmpSize);
+            if (tmpSize == "- ")
+            {
+                tmp.size = 0;
+            }
+            else {
+                //std::cout << tmpSize << std::endl;
+                tmp.size = std::stoi(tmpSize);
+            }
             tmp.method = request.parseMethod(unparsedMethod);
             swap(request, tmp);
         } else {
@@ -157,21 +164,26 @@ std::istream& operator>>(std::istream& str, Request& request)
 } //----- Fin de operator >>
 
 
-  std::ostream& operator<<(std::ostream & str, const Request& request) {
+  std::ostream& operator<<(std::ostream & os, const Request& request) {
       struct tm *timeinfo = localtime(&request.timestamp);
       char stringedtime[30];
-      strftime(stringedtime, 30, "%d/%b/%Y :%H:%M:%S %z", timeinfo);
-      std::cout << request.ipAddress << " ";
-      std::cout << request.logUsername << " ";
-      std::cout << request.authUsername << " ";
-      std::cout << "[" << stringedtime << "] ";
-      std::cout << '"' << request.unparseMethod(request.method) << " ";
-      std::cout << request.url << '"' + ' ';
-      std::cout << request.statusCode << " ";
-      std::cout << request.size << " ";
-      std::cout << '"' << request.referer << "\" ";
-      std::cout << '"' << request.userAgent << '"' << "\n";
-      return str;
+      strftime(stringedtime, 30, "%d/%b/%Y:%H:%M:%S %z", timeinfo);
+      os << request.ipAddress << " ";
+      os << request.logUsername << " ";
+      os << request.authUsername << " ";
+      os << "[" << stringedtime << "] ";
+      os << '"' << request.unparseMethod(request.method) << " ";
+      os << request.url << '"' << ' ';
+      os << request.statusCode << " ";
+      if (request.size == 0)
+      {
+          os << "- ";
+      } else {
+          os << request.size << " ";
+      }
+      os << '"' << request.referer << "\" ";
+      os << '"' << request.userAgent << '"';
+      return os;
   }
 //-------------------------------------------- Constructeurs - destructeur
 Request::Request ( const Request & other )
