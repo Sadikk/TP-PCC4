@@ -95,6 +95,7 @@ public:
     // Contrat :
     //
 
+
 //------------------------------------------------- Surcharge d'opérateurs
     Request & operator = ( Request other );
     // Mode d'emploi :
