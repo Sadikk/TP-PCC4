@@ -26,7 +26,14 @@ int Cache<T>::Put ( const T item )
 // Algorithme :
 //
 {
+    auto it = reverseCache.find(item);
+    if(it != reverseCache.end())
+    {
+        //element already exists
+        return it->second;
+    }
     cache[currentKey] = item;
+    reverseCache[item] = currentKey;
     return currentKey++;
 } //----- Fin de Put
 
