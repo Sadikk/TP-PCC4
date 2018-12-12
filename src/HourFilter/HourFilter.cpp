@@ -64,7 +64,7 @@ HourFilter::HourFilter ( int start, int end ) : startHour(start)
     cout << "Appel au constructeur de <HourFilter>" << endl;
 #endif
 
-(endHour == -1) ? (endHour = startHour+1) : (endHour);
+(end == -1) ? (endHour = startHour+1) : (endHour = end);
 } //----- Fin de HourFilter
 
 
