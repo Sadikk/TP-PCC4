@@ -83,7 +83,7 @@ HttpMethod Request::parseMethod(string unparsedMethod) const {
     } else if (unparsedMethod == "PATCH") {
         return PATCH;
     }
-    throw std::invalid_argument("Unknown http method " + unparsedMethod);
+    throw std::invalid_argument("Unknown http method ");
 }
 
 string Request::unparseMethod(HttpMethod parsedMethod) const {
@@ -107,7 +107,7 @@ string Request::unparseMethod(HttpMethod parsedMethod) const {
         case 8 :
             return "PATCH";
     }
-    throw std::invalid_argument( "Unknown method " + parsedMethod );
+    throw std::invalid_argument( "Unknown method " );
 }
 //------------------------------------------------- Surcharge d'opérateurs
 Request & Request::operator = ( Request other )
