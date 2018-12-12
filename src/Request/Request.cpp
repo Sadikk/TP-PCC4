@@ -82,8 +82,10 @@ HttpMethod Request::parseMethod(string unparsedMethod) const {
         return TRACE;
     } else if (unparsedMethod == "PATCH") {
         return PATCH;
+    } else if (unparsedMethod == "PROPFIND") {
+        return PROPFIND;
     }
-    throw std::invalid_argument("Unknown http method ");
+    throw std::invalid_argument("Unknown http method " + unparsedMethod);
 }
 
 string Request::unparseMethod(HttpMethod parsedMethod) const {
@@ -106,6 +108,8 @@ string Request::unparseMethod(HttpMethod parsedMethod) const {
             return "TRACE";
         case 8 :
             return "PATCH";
+        case 9 :
+            return "PROPFIND";
     }
     throw std::invalid_argument( "Unknown method " );
 }
