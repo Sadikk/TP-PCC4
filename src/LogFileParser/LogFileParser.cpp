@@ -80,14 +80,13 @@ LogFileParser::LogFileParser(const LogFileParser &other)
 } //----- Fin de LogFileParser (constructeur de copie)
 
 
-LogFileParser::LogFileParser(std::string inputFile, std::vector<AbstractFilter*> filters)
+LogFileParser::LogFileParser(std::string inputFile, std::vector<AbstractFilter*> filters) : filename(inputFile), options(filters)
 // Algorithme :
 //
 {
 #ifdef MAP
     cout << "Appel au constructeur de <LogFileParser>" << endl;
 #endif
-    //TODO
 } //----- Fin de LogFileParser
 
 

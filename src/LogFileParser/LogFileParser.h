@@ -35,9 +35,11 @@ public:
 //----------------------------------------------------- Méthodes publiques
     DirectedGraph<ResourceNode>* Parse() const;
     // Mode d'emploi :
-    //
+    //      Génére un graphe représentant le fichier de log parsé et filtré
+    // selon les options spécifiés
     // Contrat :
-    //
+    //      La désallocation mémoire du graphe est laissé à la charge de
+    // l'utilisateur
 
 
 //------------------------------------------------- Surcharge d'opérateurs

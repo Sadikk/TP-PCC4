@@ -16,9 +16,9 @@
 //------------------------------------------------------------- Constantes
 
 //------------------------------------------------------------------ Types
-typedef std::string string;
+using std::string;
 typedef struct tm tm;
-enum HttpMethod {GET, POST, OPTIONS , HEAD, PUT, DELETE, CONNECT, TRACE, PATCH};
+enum HttpMethod {GET, POST, OPTIONS , HEAD, PUT, DELETE, CONNECT, TRACE, PATCH, PROPFIND};
 //------------------------------------------------------------------------
 // Rôle de la classe <Request>
 
@@ -71,6 +71,12 @@ public:
     // Contrat :
     //
 
+    string GetHttpVersion() const;
+    // Mode d'emploi :
+    //      Getter de la version HTTP
+    // Contrat :
+    //
+
     int GetStatusCode() const;
     // Mode d'emploi :
     //      Getter du code de statut
@@ -120,8 +126,8 @@ public:
     //
 
     Request(string ipAddress = "", string logUsername = "", string authUsername = "", std::time_t tstamp = 0,
-            HttpMethod httpMethod = GET, string uri = "", int status = 200, int length = 0, string ref = "" ,
-            string uAgent = "");
+            HttpMethod httpMethod = GET, string uri = "", string version = "", int status = 200, int length = 0,
+            string ref = "", string uAgent = "");
     // Mode d'emploi :
     //      Constructeur
     // Contrat :
@@ -155,6 +161,8 @@ protected:
     HttpMethod method; // Type de la requête : GET, POST, OPTIONS
 
     string url; // URL
+
+    string httpVersion;
 
     int statusCode; // Return Code HTTP : 200, 404, etc
 
