@@ -58,6 +58,10 @@ string Request::GetUserAgent() const {
     return userAgent;
 }
 
+string Request::GetHttpVersion() const {
+    return httpVersion;
+}
+
 bool Request::IsError() const {
     // 4xx and 5xx codes are for errors
     return statusCode >= 400;
@@ -82,8 +86,10 @@ HttpMethod Request::parseMethod(string unparsedMethod) const {
         return TRACE;
     } else if (unparsedMethod == "PATCH") {
         return PATCH;
+    } else if (unparsedMethod == "PROPFIND") {
+        return PROPFIND;
     }
-    throw std::invalid_argument("Unknown http method ");
+    throw std::invalid_argument("Unknown http method " + unparsedMethod);
 }
 
 string Request::unparseMethod(HttpMethod parsedMethod) const {
@@ -106,6 +112,8 @@ string Request::unparseMethod(HttpMethod parsedMethod) const {
             return "TRACE";
         case 8 :
             return "PATCH";
+        case 9 :
+            return "PROPFIND";
     }
     throw std::invalid_argument( "Unknown method " );
 }
@@ -134,7 +142,8 @@ std::istream& operator>>(std::istream& str, Request& request)
             std::getline(iss, tmp.authUsername, ' ') &&
             std::getline(iss, tmpTimeStamp, '"') &&
             std::getline(iss, unparsedMethod, ' ') &&
-            std::getline(iss, tmp.url, '"') &&
+            std::getline(iss, tmp.url, ' ') &&
+            std::getline(iss, tmp.httpVersion, '"') &&
             std::getline(iss, placeholder, ' ') && // espace entre URL et statusCode
             std::getline(iss, tmpStatusCode, ' ') &&
             std::getline(iss, tmpSize, '"') &&
@@ -173,7 +182,8 @@ std::istream& operator>>(std::istream& str, Request& request)
       os << request.authUsername << " ";
       os << "[" << stringedtime << "] ";
       os << '"' << request.unparseMethod(request.method) << " ";
-      os << request.url << '"' << ' ';
+      os << request.url << " ";
+      os << request.httpVersion << "\" ";
       os << request.statusCode << " ";
       if (request.size == 0)
       {
@@ -199,6 +209,7 @@ Request::Request ( const Request & other )
     timestamp = other.timestamp;
     method = other.method;
     url = other.url;
+    httpVersion = other.httpVersion;
     statusCode = other.statusCode;
     size = other.size;
     referer = other.referer;
@@ -207,9 +218,9 @@ Request::Request ( const Request & other )
 
 
 Request::Request(string ip, string logUser, string authUser,
-  std::time_t tstamp, HttpMethod httpMethod, string uri, int status, int length, string ref, string uAgent)
+  std::time_t tstamp, HttpMethod httpMethod, string uri, string version, int status, int length, string ref, string uAgent)
   : ipAddress(ip), logUsername(logUser), authUsername(authUser), timestamp(tstamp), method(httpMethod), url(uri),
-    statusCode(status), size(length), referer(ref), userAgent(uAgent)
+  httpVersion(version), statusCode(status), size(length), referer(ref), userAgent(uAgent)
 // Algorithme :
 {
 #ifdef MAP
@@ -237,6 +248,7 @@ void swap(Request& first, Request& second) {
     std::swap(first.timestamp, second.timestamp);
     std::swap(first.method, second.method);
     std::swap(first.url, second.url);
+    std::swap(first.httpVersion, second.httpVersion);
     std::swap(first.statusCode, second.statusCode);
     std::swap(first.size, second.size);
     std::swap(first.referer, second.referer);

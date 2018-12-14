@@ -34,25 +34,25 @@ static void testIsError()
 {
     cout << "testIsError..." << "\r\n";
 
-    Request r("", "", "", 0, GET, "", 200);
+    Request r("", "", "", 0, GET, "", "", 200);
     assert(r.IsError() == false);
 
-    Request r2("", "", "", 0, GET, "", 404);
+    Request r2("", "", "", 0, GET, "", "", 404);
     assert(r2.IsError() == true);
 
-    Request r3("", "", "", 0, GET, "", 301);
+    Request r3("", "", "", 0, GET, "", "", 301);
     assert(r3.IsError() == false);
 
-    Request r4("", "", "", 0, GET, "", 302);
+    Request r4("", "", "", 0, GET, "", "", 302);
     assert(r4.IsError() == false);
 
-    Request r5("", "", "", 0, GET, "", 401);
+    Request r5("", "", "", 0, GET, "", "", 401);
     assert(r5.IsError() == true);
 
-    Request r6("", "", "", 0, GET, "", 400);
+    Request r6("", "", "", 0, GET, "", "", 400);
     assert(r6.IsError() == true);
 
-    Request r7("", "", "", 0, GET, "", 500);
+    Request r7("", "", "", 0, GET, "", "", 500);
     assert(r7.IsError() == true);
     cout << "ok" << "\r\n";
 }
@@ -86,6 +86,27 @@ static void testParsing()
     cout << "ok" << "\r\n";
 }
 
+static void ultimateParsingTest()
+{
+    cout << "Get ready for the ultimate test..." << "\r\n";
+    std::ifstream file("/tmp/anonyme.log");
+    if(file.good()) {
+        Request r;
+
+        std::string line;
+        while (std::getline(file, line))
+        {
+            std::stringstream out;
+            std::istringstream iss(line);
+            iss >> r;
+            out << r;
+            cout << out.str() << std::endl;
+            assert(out.str() == line);
+        }
+    }
+    cout << "ok" << "\r\n";
+}
+
 //////////////////////////////////////////////////////////////////  PUBLIC
 //---------------------------------------------------- Fonctions publiques
 int main()
@@ -94,4 +115,5 @@ int main()
 {
     testIsError();
     testParsing();
+    ultimateParsingTest();
 } //----- fin de main
