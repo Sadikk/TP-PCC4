@@ -17,6 +17,7 @@ using std::cout;
 //------------------------------------------------------ Include personnel
 #include "TResourceNode.h"
 #include "../../src/ResourceNode/ResourceNode.h"
+#include "../../src/StringCache/StringCache.h"
 ///////////////////////////////////////////////////////////////////  PRIVE
 //------------------------------------------------------------- Constantes
 
@@ -28,17 +29,18 @@ using std::cout;
 static void testGetLabel()
 {
     cout << "testGetLabel..." << "\r\n";
+    int id = StringCache::GetInstance().Put("za");
 
-    ResourceNode node(2, true);
+    ResourceNode node(id, true);
 
     assert(node.GetLabel() == "0");
     node.Hit();
 
     assert(node.GetLabel() == "1");
 
-    ResourceNode node2(3, false);
+    ResourceNode node2(id, false);
 
-    assert(node2.GetLabel() != "0");
+    assert(node2.GetLabel() != "za");
 
     cout << "ok" << "\r\n";
 }

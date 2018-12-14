@@ -19,6 +19,7 @@ using std::cout;
 #include "TDirectedGraph.h"
 #include "../../src/DirectedGraph/DirectedGraph.h"
 #include "../../src/ResourceNode/ResourceNode.h"
+#include "../../src/StringCache/StringCache.h"
 ///////////////////////////////////////////////////////////////////  PRIVE
 //------------------------------------------------------------- Constantes
 
@@ -31,24 +32,27 @@ static void testAdd()
 {
     cout << "testAdd..." << "\r\n";
 
-    DirectedGraph<ResourceNode> graph;
+    DirectedGraph<int, ResourceNode> graph;
     std::ostream & os = cout;
 
-	ResourceNode node0(0, false);
-	ResourceNode node1(1, false);
-	ResourceNode node2(2, false);
+	int t0 = 0;
+	int t1 = 1;
+	int t2 = 2;
 
+	StringCache::GetInstance().Put("0");
+	StringCache::GetInstance().Put("1");
+	StringCache::GetInstance().Put("2");
 
 	ResourceNode referer0(0, true);
 	ResourceNode referer1(1, true);
 	ResourceNode referer2(2, true);
 
 
-	graph.Add(referer0, node1);
-	graph.Add(referer0, node2);
-	graph.Add(referer1, node0);
-	graph.Add(referer1, node0);
-	graph.Add(referer2, node0);
+	graph.Add(referer0, t1);
+	graph.Add(referer0, t2);
+	graph.Add(referer1, t0);
+	graph.Add(referer1, t0);
+	graph.Add(referer2, t0);
 
 	graph.Serialize(os);
 
@@ -59,11 +63,11 @@ static void testSize()
 {
 	cout << "testSize..." << "\r\n";
 	//test should be extended. as we're not actively using it now, well... maybe next time ;)
-	DirectedGraph<ResourceNode> graph;
+	DirectedGraph<int, ResourceNode> graph;
 
-	ResourceNode node0(0, false);
-	ResourceNode node1(1, false);
-	ResourceNode node2(2, false);
+    int t0 = 0;
+    int t1 = 1;
+    int t2 = 2;
 
 
 	ResourceNode referer0(0, true);
@@ -71,37 +75,11 @@ static void testSize()
 	ResourceNode referer2(2, true);
 
 
-	graph.Add(referer0, node1);
-	graph.Add(referer0, node2);
-	graph.Add(referer1, node0);
+	graph.Add(referer0, t1);
+	graph.Add(referer0, t2);
+	graph.Add(referer1, t0);
 
 	assert(graph.Size() == 3);
-	cout << "ok" << "\r\n";
-}
-
-static void testGetDegree()
-{
-	//test should be extended. as we're not actively using it now, well... maybe next time ;)
-	cout << "testGetDegree..." << "\r\n";
-	DirectedGraph<ResourceNode> graph;
-
-	ResourceNode node0(0, false);
-	ResourceNode node1(1, false);
-	ResourceNode node2(2, false);
-
-
-	ResourceNode referer0(0, true);
-	ResourceNode referer1(1, true);
-	ResourceNode referer2(2, true);
-
-
-	graph.Add(referer0, node1);
-	graph.Add(referer0, node2);
-	graph.Add(referer1, node0);
-
-	assert(graph.GetDegree(node0) == 3);
-	assert(graph.GetDegree(node1) == 2);
-	assert(graph.GetDegree(node2) == 1);
 	cout << "ok" << "\r\n";
 }
 
@@ -113,5 +91,4 @@ int main()
 {
     testAdd();
     testSize();
-    testGetDegree();
 } //----- fin de main
