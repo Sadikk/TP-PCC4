@@ -33,7 +33,7 @@ class LogFileParser {
 
 public:
 //----------------------------------------------------- Méthodes publiques
-    DirectedGraph<ResourceNode>* Parse() const;
+    DirectedGraph<int, ResourceNode>* Parse() const;
     // Mode d'emploi :
     //      Génére un graphe représentant le fichier de log parsé et filtré
     // selon les options spécifiés
