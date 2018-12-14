@@ -14,9 +14,16 @@
 #include <algorithm>
 #include <string>
 #include <iostream>
+#include <fstream>
 #include <sstream>
+#include <sys/stat.h>
 //------------------------------------------------------ Include personnel
-
+#include "AbstractFilter/AbstractFilter.h"
+#include "HourFilter/HourFilter.h"
+#include "ExtensionFilter/ExtensionFilter.h"
+#include "LogFileParser/LogFileParser.h"
+#include "DirectedGraph/DirectedGraph.h"
+#include "StringCache/StringCache.h"
 ///////////////////////////////////////////////////////////////////  PRIVE
 //------------------------------------------------------------- Constantes
 
@@ -41,15 +48,21 @@ bool cmdOptionExists(char** begin, char** end, const std::string& option)
     return std::find(begin, end, option) != end;
 }
 
-void usage(char* progName)
+bool fileExists(const char* file)
 {
-    std::cout << progName << "[options] inputFile.log" << endl <<
-         "Parses Apache/Nginx log"
-         "Options:" << endl <<
-         "-h                Print this help" << endl <<
-         "-t hour           Includes only requests between [hour; hour+1[" << endl <<
-         "-g output.dot     Exports parsed graph as GraphViz format into output file" << endl <<
-         "-e                Excludes pictures/css/js requests" << endl;
+    struct stat buffer;
+    return (stat (file, &buffer) == 0);
+}
+
+void usage(std::string progName)
+{
+    std::cout << "Utilisation : " << progName << "[options] inputFile.log" << std::endl <<
+         "Analyse un fichier de logs Apache/Nginx" << std::endl <<
+         "Options:" << std::endl <<
+         "-h                Affiche cette aide" << std::endl <<
+         "-t hour           Inclus seulement les requêtes d'heures [hour; hour+1[" << std::endl <<
+         "-g output.dot     Exporte le graphe au format GraphViz dans le fichier de sortie" << std::endl <<
+         "-e                Exclut les requêtes css/js/images" << std::endl;
 }
 //////////////////////////////////////////////////////////////////  PUBLIC
 //---------------------------------------------------- Fonctions publiques
@@ -57,16 +70,17 @@ int main ( int argc, char *argv[] )
 // Algorithme :
 //
 {
-    //std::vector<AbstractFilter*> options;
+    std::vector<AbstractFilter*> options;
 
-    if(cmdOptionExists(argv, argv+argc, "-h"))
+    if(cmdOptionExists(argv, argv+argc, "-h") || argc == 1)
     {
-        // Do stuff
+        usage("analog");
+        return 0;
     }
 
     if(cmdOptionExists(argv, argv+argc, "-e"))
     {
-        /*
+
         //css
         options.push_back(new ExtensionFilter(".css"));
 
@@ -90,7 +104,6 @@ int main ( int argc, char *argv[] )
         options.push_back(new ExtensionFilter(".j2k"));
         options.push_back(new ExtensionFilter(".fpx"));
         options.push_back(new ExtensionFilter(".pcd"));
-        */
     }
 
 
@@ -115,32 +128,55 @@ int main ( int argc, char *argv[] )
             if (intHour < 0 || intHour > 24)
             {
                 std::cerr << "error : Time filter should be between 0 and 24" << std::endl;
-                throw std::exception("aborting");
+                throw std::out_of_range("aborting");
             } else {
-                //options.push_back(new HourFilter(intHour));
+                options.push_back(new HourFilter(intHour));
             }
         } else
         {
-            throw std::exception("aborting");
+            throw std::out_of_range("aborting");
         }
 
     }
 
     std::string inputFile = argv[argc - 1];
-    struct stat buffer;
-    if (stat (inputFile.c_str(), &buffer) != 0)
-    {
+    if (!fileExists(inputFile.c_str())) {
         std::cerr << "error : inputFile " << inputFile << " doesn't seem to exist" << std::endl;
-        throw std::exception("aborting");
+        throw std::invalid_argument("aborting");
     }
 
-    //TODO create log File parser
+    LogFileParser parser(inputFile, options);
     char * outputFile = getCmdOption(argv, argv + argc, "-g");
+    DirectedGraph<int, ResourceNode>* graph = parser.Parse();
+
+    for (std::pair<int, int> pair : *graph->Top(10)) {
+        std::cout << StringCache::GetInstance().Get(pair.first) << " (" << pair.second << " hits)" << std::endl;
+    }
 
     if (outputFile)
     {
-        //TODO generate graphViz
+        if (fileExists(outputFile))
+        {
+            std::cout << "Le fichier " << outputFile << " semble déjà exister, souhaitez-vous l'écraser ? (o/n) [n]" << std::endl;
+            std::string answer;
+            std::getline(std::cin >> std::ws, answer);
+            while(std::cin.eof() || std::cin.bad() || std::cin.fail())
+            {
+                std::cin.clear();
+                std::getline(std::cin >> std::ws, answer);
+            }
+            if (answer != "o")
+            {
+                return 0;
+            }
+        }
+        std::ofstream os;
+        os.open(outputFile);
+        graph->Serialize(os);
+        std::cout << "GraphViz généré avec succès et sauvegardé dans le fichier : " << outputFile << std::endl;
     }
+
+
 
 } //----- fin de main
 
