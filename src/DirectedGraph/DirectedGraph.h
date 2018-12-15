@@ -11,9 +11,10 @@
 #define DirectedGraph_H
 
 //--------------------------------------------------- Interfaces utilisées
-#include <map>
+#include <unordered_map>
 #include <unordered_set>
 #include <iostream>
+#include <vector>
 //------------------------------------------------------------- Constantes
 
 //------------------------------------------------------------------ Types
@@ -24,20 +25,20 @@
 // Représente un graphe orienté de noeuds de type T.
 // T doit implémenter les operateurs <<, <, ==
 //------------------------------------------------------------------------
-template <typename T>
+template <typename S, typename T>
 class DirectedGraph;
 
-template <typename T>
-void swap(DirectedGraph<T> & first, DirectedGraph<T> & second);
+template <typename S, typename T>
+void swap(DirectedGraph<S, T> & first, DirectedGraph<S, T> & second);
 
 
-template <typename T>
+template <typename S, typename T>
 class DirectedGraph {
 //----------------------------------------------------------------- PUBLIC
 
 public:
 //----------------------------------------------------- Méthodes publiques
-    void Add(T& from, T& to);
+    void Add(T& from, S& to);
     // Mode d'emploi :
     //      Ajoute un arc au graphe du noeud 'from' au noeud 'to'.
     //          - from : objet de départ
@@ -51,20 +52,20 @@ public:
     // Contrat :
     //
 
-    int GetDegree(T & node) const;
-    // Mode d'emploi :
-    //      Retourne le degré(valence) d'un noeud du graphe
-    // Contrat :
-    //
-
     int Size() const;
     // Mode d'emploi :
     //      Retourne le nombre de noeuds ayant au moins un noeud enfant
     // Contrat :
     //
 
+    std::vector<std::pair<S, int>>* Top(int n) const;
+    // Mode d'emploi :
+    //      Retourne les n noeuds les plus lourds par ordre décroissant de poids
+    // Contrat :
+    //
+
 //------------------------------------------------- Surcharge d'opérateurs
-    DirectedGraph<T> &operator=(DirectedGraph<T> other);
+    DirectedGraph<S,T> &operator=(DirectedGraph<S,T> other);
     // Mode d'emploi :
     //
     // Contrat :
@@ -72,7 +73,7 @@ public:
 
 
 //-------------------------------------------- Constructeurs - destructeur
-    DirectedGraph(const DirectedGraph<T> &other);
+    DirectedGraph(const DirectedGraph<S, T> &other);
     // Mode d'emploi (constructeur de copie) :
     //
     // Contrat :
@@ -94,9 +95,11 @@ public:
 
 protected:
 //----------------------------------------------------- Méthodes protégées
-    friend void swap<T>(DirectedGraph<T> & first, DirectedGraph<T> & second);
+    friend void swap<S,T>(DirectedGraph<S, T> & first, DirectedGraph<S, T> & second);
 //----------------------------------------------------- Attributs protégés
-    std::map<T, std::unordered_set<T>> adjacencyMap;
+    std::unordered_map<S, std::unordered_set<T>> adjacencyMap;
+    std::unordered_map<S, int> nodesWeight;
+
 };
 
 //-------------------------------- Autres définitions dépendantes de <DirectedGraph>

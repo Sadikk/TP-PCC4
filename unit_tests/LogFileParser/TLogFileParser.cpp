@@ -30,11 +30,14 @@ static void testParse()
 {
     cout << "testParse..." << "\r\n";
 
-    LogFileParser parser("/tmp/anonyme.log");
-    DirectedGraph<ResourceNode>* graph = parser.Parse();
+    LogFileParser parser("/tmp/anonyme_splitaa");
+    DirectedGraph<int, ResourceNode>* graph = parser.Parse();
 
     graph->Serialize(cout);
-
+    /*for (auto pair : *graph->Top(10))
+    {
+        cout << pair.first << " : " << pair.second << std::endl;
+    }*/
     delete graph;
     cout << "ok" << "\r\n";
 }

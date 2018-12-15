@@ -7,8 +7,8 @@
 *************************************************************************/
 
 //---------- Interface de la classe <HourFilter> (fichier HourFilter.h) ----------------
-#if ! defined ( ABSTRACT_FILTER_H )
-#define ABSTRACT_FILTER_H
+#if ! defined ( HOUR_FILTER_H )
+#define HOUR_FILTER_H
 
 //--------------------------------------------------- Interfaces utilisées
 #include "../AbstractFilter/AbstractFilter.h"
@@ -75,4 +75,4 @@ int endHour;
 
 //-------------------------------- Autres définitions dépendantes de <HourFilter>
 
-#endif // ABSTRACT_SERIALIZER_H
+#endif // HOUR_FILTER_H

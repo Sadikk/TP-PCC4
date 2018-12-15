@@ -15,16 +15,18 @@
 #include <iterator>
 #include <utility>
 #include <algorithm>
+#include <vector>
 //------------------------------------------------------ Include personnel
 #include "DirectedGraph.h"
 #include "../ResourceNode/ResourceNode.h"
+#include "../StringCache/StringCache.h"
 //------------------------------------------------------------- Constantes
 
 //----------------------------------------------------------------- PUBLIC
 
 //----------------------------------------------------- Méthodes publiques
-template <typename T>
-void DirectedGraph<T>::Add(T& from, T& to)
+template <typename S, typename T>
+void DirectedGraph<S, T>::Add(T& from, S& to)
 // Algorithme :
 //
 {
@@ -33,52 +35,30 @@ void DirectedGraph<T>::Add(T& from, T& to)
 } //----- Fin de Add
 
 template<>
-void DirectedGraph<ResourceNode>::Add(ResourceNode& from, ResourceNode& to)
+void DirectedGraph<int, ResourceNode>::Add(ResourceNode& from, int& to)
 // Algorithme :
 //
 {
-    bool flag = false;
-    //find by id, because comparator used to order is also used for equality so it cannot be used here
-    std::map<ResourceNode, std::unordered_set<ResourceNode>>::iterator it = std::find_if(
-            adjacencyMap.begin(),
-            adjacencyMap.end(),
-            [to] (const std::pair<ResourceNode, std::unordered_set<ResourceNode>>& v) {
-                return v.first.GetId() == to.GetId();
-            }
-    );
-
-    std::pair<std::unordered_set<ResourceNode>::iterator, bool> p;
-    if (it != adjacencyMap.end()) {
-        // increase hit count
-        // in c++ 17 we could use extract instead
-        ResourceNode updated(to);
-        updated.Hit();
-
-        std::unordered_set<ResourceNode> tmpSet = it->second;
-        //we're updating a key, so delete node and inserting it again to keep it balanced
-        adjacencyMap.erase(it);
-        adjacencyMap[updated] = tmpSet;
-        //std::cout << adjacencyMap.insert(std::pair<ResourceNode, std::unordered_set<ResourceNode>>(updated, it->second)).second << std::endl;
-        p = adjacencyMap[updated].insert(from);
-        flag = true;
-    }
-    if (!flag) {
-        p = adjacencyMap[to].insert(from);
-    }
-
-    if (!p.second)
+    std::pair<std::unordered_map<int, std::unordered_set<ResourceNode>>::iterator, bool> p = adjacencyMap.insert(std::pair<int, std::unordered_set<ResourceNode>>(to, std::unordered_set<ResourceNode>()));
+    auto referer_exist =  p.first->second.insert(from);
+    if (!referer_exist.second)
     {
-        //value already present, increase referer count
-        (*(p.first)).Hit();
+        //increase referer count
+        referer_exist.first->Hit();
+    }
+
+    std::pair<std::unordered_map<int, int>::iterator, bool> w = nodesWeight.insert(std::pair<int, int>(to, 1));
+    if (!w.second) {
+        w.first->second++;
     }
 } //----- Fin de Add
 
-template <typename T>
-void DirectedGraph<T>::Serialize(std::ostream &os) const
+template <typename S, typename T>
+void DirectedGraph<S, T>::Serialize(std::ostream &os) const
 // Algorithme :
 //
 {
-    for (std::pair<T, std::unordered_set<T>> const& pair : adjacencyMap)
+    for (std::pair<S, std::unordered_set<T>> const& pair : adjacencyMap)
     {
         os << pair.first;
         for (const T& referer: pair.second) {
@@ -88,49 +68,48 @@ void DirectedGraph<T>::Serialize(std::ostream &os) const
 }
 
 template <>
-void DirectedGraph<ResourceNode>::Serialize(std::ostream &os) const
+void DirectedGraph<int, ResourceNode>::Serialize(std::ostream &os) const
 // Algorithme :
 //
 {
-    for (std::pair<ResourceNode, std::unordered_set<ResourceNode>> const& pair : adjacencyMap)
+    for (std::pair<int, std::unordered_set<ResourceNode>> const& pair : adjacencyMap)
     {
-        os << pair.first << std::endl;
+        os << "\tnode" << pair.first << " [label=\"" << StringCache::GetInstance().Get(pair.first) << "\"]" << std::endl;
         for (const ResourceNode& referer: pair.second) {
-            os <<  "\tnode" << referer.GetId() << " -> " << "node" << pair.first.GetId() << " [label=\"" << referer.GetLabel() << "\"]" << std::endl;
+            os <<  "\tnode" << referer.GetId() << " -> " << "node" << pair.first << " [label=\"" << referer.GetLabel() << "\"]" << std::endl;
         }
     }
 }
 
-template <typename T>
-int DirectedGraph<T>::GetDegree(T & node) const
-// Algorithme :
-//
-{
-    int out = adjacencyMap.at(node).size();
-    int in = 0;
-    for (std::pair<T, std::unordered_set<T>> const& pair : adjacencyMap)
-    {
-        for (const T& n: pair.second) {
-            if (n == node)
-            {
-                in++;
-            }
-        }
-    }
-    return in + out;
-}
-
-template <typename T>
-int DirectedGraph<T>::Size() const
+template <typename S, typename T>
+int DirectedGraph<S, T>::Size() const
 // Algorithme :
 //
 {
     return adjacencyMap.size();
 }
 
+
+template <typename S, typename T>
+std::vector<std::pair<S, int>>* DirectedGraph<S, T>::Top(int n) const
+// Algorithme :
+//
+{
+    std::vector<std::pair<S, int>>* elems = new std::vector<std::pair<S,int>>(nodesWeight.begin(), nodesWeight.end());
+
+    //sort by weight
+    std::sort(elems->begin(), elems->end(), [] (const std::pair<S, int>& a, const std::pair<S, int>& b) {
+        return a.second > b.second;
+    });
+
+    elems->resize(n);
+    return elems;
+
+}
+
 //------------------------------------------------- Surcharge d'opérateurs
-template <typename T>
-DirectedGraph<T> &DirectedGraph<T>::operator=(DirectedGraph<T> other)
+template <typename S, typename T>
+DirectedGraph<S, T> &DirectedGraph<S, T>::operator=(DirectedGraph<S, T> other)
 // Algorithme :
 //
 {
@@ -140,8 +119,8 @@ DirectedGraph<T> &DirectedGraph<T>::operator=(DirectedGraph<T> other)
 
 
 //-------------------------------------------- Constructeurs - destructeur
-template <typename T>
-DirectedGraph<T>::DirectedGraph(const DirectedGraph<T> &other)
+template <typename S, typename T>
+DirectedGraph<S, T>::DirectedGraph(const DirectedGraph<S, T> &other)
 // Algorithme :
 //
 {
@@ -151,8 +130,8 @@ DirectedGraph<T>::DirectedGraph(const DirectedGraph<T> &other)
     adjacencyMap = other.adjacencyMap;
 } //----- Fin de DirectedGraph (constructeur de copie)
 
-template <typename T>
-DirectedGraph<T>::DirectedGraph()
+template <typename S, typename T>
+DirectedGraph<S, T>::DirectedGraph()
 // Algorithme :
 //
 {
@@ -161,8 +140,8 @@ DirectedGraph<T>::DirectedGraph()
 #endif
 } //----- Fin de DirectedGraph
 
-template <typename T>
-DirectedGraph<T>::~DirectedGraph()
+template <typename S, typename T>
+DirectedGraph<S, T>::~DirectedGraph()
 // Algorithme :
 //
 {
@@ -175,8 +154,8 @@ DirectedGraph<T>::~DirectedGraph()
 //------------------------------------------------------------------ PRIVE
 
 //----------------------------------------------------- Méthodes protégées
-template <typename T>
-void swap(DirectedGraph<T> & first, DirectedGraph<T> & second)
+template <typename S, typename T>
+void swap(DirectedGraph<S, T> & first, DirectedGraph<S, T> & second)
 {
     using std::swap;
 
@@ -187,4 +166,4 @@ void swap(DirectedGraph<T> & first, DirectedGraph<T> & second)
 
 
 
-template class DirectedGraph<ResourceNode>;
+template class DirectedGraph<int, ResourceNode>;
