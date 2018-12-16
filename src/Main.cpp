@@ -26,7 +26,7 @@
 #include "StringCache/StringCache.h"
 ///////////////////////////////////////////////////////////////////  PRIVE
 //------------------------------------------------------------- Constantes
-
+const int TOP_SIZE = 10;
 //------------------------------------------------------------------ Types
 
 //---------------------------------------------------- Variables statiques
@@ -149,10 +149,11 @@ int main ( int argc, char *argv[] )
     char * outputFile = getCmdOption(argv, argv + argc, "-g");
     DirectedGraph<int, ResourceNode>* graph = parser.Parse();
 
-    for (std::pair<int, int> pair : *graph->Top(10)) {
+    std::vector<std::pair<int,int>>* top = graph->Top(TOP_SIZE);
+    for (std::pair<int, int> pair : *top) {
         std::cout << StringCache::GetInstance().Get(pair.first) << " (" << pair.second << " hits)" << std::endl;
     }
-
+    delete top;
     if (outputFile)
     {
         if (fileExists(outputFile))
@@ -167,6 +168,7 @@ int main ( int argc, char *argv[] )
             }
             if (answer != "o")
             {
+                delete graph;
                 return 0;
             }
         }
@@ -176,7 +178,7 @@ int main ( int argc, char *argv[] )
         std::cout << "GraphViz généré avec succès et sauvegardé dans le fichier : " << outputFile << std::endl;
     }
 
-
+    delete graph;
 
 } //----- fin de main
 
