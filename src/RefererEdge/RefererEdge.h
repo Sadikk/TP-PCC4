@@ -1,14 +1,14 @@
 /*************************************************************************
-                           ResourceNode  -  description
+                           RefererEdge  -  description
                              -------------------
     début                : 09/12/18
     copyright            : (C) 2018$ par $AUTHOR$
     e-mail               : $EMAIL$
 *************************************************************************/
 
-//---------- Interface de la classe <ResourceNode> (fichier ResourceNode.h) ----------------
-#ifndef ResourceNode_H
-#define ResourceNode_H
+//---------- Interface de la classe <RefererEdge> (fichier RefererEdge.h) ----------------
+#ifndef RefererEdge_H
+#define RefererEdge_H
 
 //--------------------------------------------------- Interfaces utilisées
 #include <string>
@@ -18,12 +18,12 @@
 //------------------------------------------------------------------ Types
 
 //------------------------------------------------------------------------
-// Rôle de la classe <ResourceNode>
+// Rôle de la classe <RefererEdge>
 //
 // Représente un noeud de graphe dans le contexte de l'application
 //------------------------------------------------------------------------
 
-class ResourceNode {
+class RefererEdge {
 //----------------------------------------------------------------- PUBLIC
 
 public:
@@ -47,40 +47,40 @@ public:
     //
 
 //------------------------------------------------- Surcharge d'opérateurs
-    ResourceNode & operator = ( ResourceNode other );
+    RefererEdge & operator = ( RefererEdge other );
     // Mode d'emploi :
     //
     // Contrat :
     //
 
-    friend bool operator< (const ResourceNode& a, const ResourceNode& b)
+    friend bool operator< (const RefererEdge& a, const RefererEdge& b)
     {
         return a.hitCount < b.hitCount || (
                 !(b.hitCount < a.hitCount) && a.id < b.id
         );
     }
 
-    bool operator ==(const ResourceNode & obj) const
+    bool operator ==(const RefererEdge & obj) const
     {
         return id == obj.id;
     }
 
-    friend std::ostream& operator<<(std::ostream& os, const ResourceNode& node);
+    friend std::ostream& operator<<(std::ostream& os, const RefererEdge& node);
 
 //-------------------------------------------- Constructeurs - destructeur
-    ResourceNode(const ResourceNode &other);
+    RefererEdge(const RefererEdge &other);
     // Mode d'emploi (constructeur de copie) :
     //
     // Contrat :
     //
 
-    ResourceNode(int identifier, bool isReferer = false);
+    RefererEdge(int identifier, bool isReferer = false);
     // Mode d'emploi :
     //
     // Contrat :
     //
 
-    virtual ~ResourceNode();
+    virtual ~RefererEdge();
     // Mode d'emploi :
     //
     // Contrat :
@@ -90,7 +90,7 @@ public:
 
 protected:
 //----------------------------------------------------- Méthodes protégées
-    friend void swap(ResourceNode& first, ResourceNode& second);
+    friend void swap(RefererEdge& first, RefererEdge& second);
 
 
     //----------------------------------------------------- Attributs protégés
@@ -102,17 +102,17 @@ protected:
 
 };
 
-//-------------------------------- Autres définitions dépendantes de <ResourceNode>
+//-------------------------------- Autres définitions dépendantes de <RefererEdge>
 namespace std
 {
     template<>
-    struct hash<ResourceNode>
+    struct hash<RefererEdge>
     {
-        size_t operator()(const ResourceNode & obj) const
+        size_t operator()(const RefererEdge & obj) const
         {
             return hash<int>()(obj.GetId());
         }
     };
 }
-#endif // ResourceNode_H
+#endif // RefererEdge_H
 

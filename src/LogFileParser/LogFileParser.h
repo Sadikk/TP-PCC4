@@ -16,7 +16,7 @@
 
 #include "../DirectedGraph/DirectedGraph.h"
 #include "../AbstractFilter/AbstractFilter.h"
-#include "../ResourceNode/ResourceNode.h"
+#include "../RefererEdge/RefererEdge.h"
 //------------------------------------------------------------- Constantes
 
 //------------------------------------------------------------------ Types
@@ -33,7 +33,7 @@ class LogFileParser {
 
 public:
 //----------------------------------------------------- Méthodes publiques
-    DirectedGraph<int, ResourceNode>* Parse() const;
+    DirectedGraph<int, RefererEdge>* Parse() const;
     // Mode d'emploi :
     //      Génére un graphe représentant le fichier de log parsé et filtré
     // selon les options spécifiés

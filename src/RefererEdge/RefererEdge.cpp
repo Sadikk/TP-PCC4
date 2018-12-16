@@ -1,33 +1,33 @@
 /*************************************************************************
-                           ResourceNode  -  description
+                           RefererEdge  -  description
                              -------------------
     début                : 09/12/18
     copyright            : (C) 2018$ par $AUTHOR$
     e-mail               : $EMAIL$
 *************************************************************************/
 
-//---------- Réalisation de la classe <ResourceNode> (fichier ResourceNode.cpp) ------------
+//---------- Réalisation de la classe <RefererEdge> (fichier RefererEdge.cpp) ------------
 
 //---------------------------------------------------------------- INCLUDE
 
 //-------------------------------------------------------- Include système
 
 //------------------------------------------------------ Include personnel
-#include "ResourceNode.h"
+#include "RefererEdge.h"
 #include "../StringCache/StringCache.h"
 //------------------------------------------------------------- Constantes
 
 //----------------------------------------------------------------- PUBLIC
 
 //----------------------------------------------------- Méthodes publiques
-void ResourceNode::Hit() const
+void RefererEdge::Hit() const
 // Algorithme :
 //
 {
     hitCount++;
 }
 
-std::string ResourceNode::GetLabel() const
+std::string RefererEdge::GetLabel() const
 // Algorithme :
 //
 {
@@ -41,7 +41,7 @@ std::string ResourceNode::GetLabel() const
     }
 }
 
-int ResourceNode::GetId() const
+int RefererEdge::GetId() const
 // Algorithme :
 //
 {
@@ -50,7 +50,7 @@ int ResourceNode::GetId() const
 
 
 //------------------------------------------------- Surcharge d'opérateurs
-ResourceNode& ResourceNode::operator=(ResourceNode other)
+RefererEdge& RefererEdge::operator=(RefererEdge other)
 // Algorithme :
 //
 {
@@ -59,43 +59,43 @@ ResourceNode& ResourceNode::operator=(ResourceNode other)
 } //----- Fin de operator =
 
 //-------------------------------------------- Constructeurs - destructeur
-ResourceNode::ResourceNode(const ResourceNode &other)
+RefererEdge::RefererEdge(const RefererEdge &other)
 // Algorithme :
 //
 {
 #ifdef MAP
-    cout << "Appel au constructeur de copie de <ResourceNode>" << endl;
+    cout << "Appel au constructeur de copie de <RefererEdge>" << endl;
 #endif
     hitCount = other.hitCount;
     referer = other.referer;
     id = other.id;
-} //----- Fin de ResourceNode (constructeur de copie)
+} //----- Fin de RefererEdge (constructeur de copie)
 
 
-ResourceNode::ResourceNode(int identifier, bool isReferer) : id(identifier), referer(isReferer), hitCount(1)
+RefererEdge::RefererEdge(int identifier, bool isReferer) : id(identifier), referer(isReferer), hitCount(1)
 // Algorithme :
 //
 {
 #ifdef MAP
-    cout << "Appel au constructeur de <ResourceNode>" << endl;
+    cout << "Appel au constructeur de <RefererEdge>" << endl;
 #endif
-} //----- Fin de ResourceNode
+} //----- Fin de RefererEdge
 
 
-ResourceNode::~ResourceNode()
+RefererEdge::~RefererEdge()
 // Algorithme :
 //
 {
 #ifdef MAP
-    cout << "Appel au destructeur de <ResourceNode>" << endl;
+    cout << "Appel au destructeur de <RefererEdge>" << endl;
 #endif
-} //----- Fin de ~ResourceNode
+} //----- Fin de ~RefererEdge
 
 
 //------------------------------------------------------------------ PRIVE
 
 //----------------------------------------------------- Méthodes protégées
-void swap(ResourceNode& first, ResourceNode& second)
+void swap(RefererEdge& first, RefererEdge& second)
 {
     using std::swap;
 
@@ -104,7 +104,7 @@ void swap(ResourceNode& first, ResourceNode& second)
     std::swap(first.id, second.id);
 }
 
-std::ostream& operator<<(std::ostream& os, const ResourceNode& node)
+std::ostream& operator<<(std::ostream& os, const RefererEdge& node)
 {
     os << "\tnode" << node.GetId() << " [label=\"" << node.GetLabel() << "\"]";
     return os;

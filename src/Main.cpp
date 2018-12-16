@@ -147,7 +147,7 @@ int main ( int argc, char *argv[] )
 
     LogFileParser parser(inputFile, options);
     char * outputFile = getCmdOption(argv, argv + argc, "-g");
-    DirectedGraph<int, ResourceNode>* graph = parser.Parse();
+    DirectedGraph<int, RefererEdge>* graph = parser.Parse();
 
     std::vector<std::pair<int,int>>* top = graph->Top(TOP_SIZE);
     for (std::pair<int, int> pair : *top) {

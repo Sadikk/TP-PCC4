@@ -18,7 +18,7 @@
 #include <vector>
 //------------------------------------------------------ Include personnel
 #include "DirectedGraph.h"
-#include "../ResourceNode/ResourceNode.h"
+#include "../RefererEdge/RefererEdge.h"
 #include "../StringCache/StringCache.h"
 //------------------------------------------------------------- Constantes
 
@@ -35,11 +35,11 @@ void DirectedGraph<S, T>::Add(T& from, S& to)
 } //----- Fin de Add
 
 template<>
-void DirectedGraph<int, ResourceNode>::Add(ResourceNode& from, int& to)
+void DirectedGraph<int, RefererEdge>::Add(RefererEdge& from, int& to)
 // Algorithme :
 //
 {
-    std::pair<std::unordered_map<int, std::unordered_set<ResourceNode>>::iterator, bool> p = adjacencyMap.insert(std::pair<int, std::unordered_set<ResourceNode>>(to, std::unordered_set<ResourceNode>()));
+    std::pair<std::unordered_map<int, std::unordered_set<RefererEdge>>::iterator, bool> p = adjacencyMap.insert(std::pair<int, std::unordered_set<RefererEdge>>(to, std::unordered_set<RefererEdge>()));
     auto referer_exist =  p.first->second.insert(from);
     if (!referer_exist.second)
     {
@@ -68,14 +68,14 @@ void DirectedGraph<S, T>::Serialize(std::ostream &os) const
 }
 
 template <>
-void DirectedGraph<int, ResourceNode>::Serialize(std::ostream &os) const
+void DirectedGraph<int, RefererEdge>::Serialize(std::ostream &os) const
 // Algorithme :
 //
 {
-    for (std::pair<int, std::unordered_set<ResourceNode>> const& pair : adjacencyMap)
+    for (std::pair<int, std::unordered_set<RefererEdge>> const& pair : adjacencyMap)
     {
         os << "\tnode" << pair.first << " [label=\"" << StringCache::GetInstance().Get(pair.first) << "\"]" << std::endl;
-        for (const ResourceNode& referer: pair.second) {
+        for (const RefererEdge& referer: pair.second) {
             os <<  "\tnode" << referer.GetId() << " -> " << "node" << pair.first << " [label=\"" << referer.GetLabel() << "\"]" << std::endl;
         }
     }
@@ -166,4 +166,4 @@ void swap(DirectedGraph<S, T> & first, DirectedGraph<S, T> & second)
 
 
 
-template class DirectedGraph<int, ResourceNode>;
+template class DirectedGraph<int, RefererEdge>;

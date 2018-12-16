@@ -21,12 +21,12 @@
 //----------------------------------------------------------------- PUBLIC
 
 //----------------------------------------------------- Méthodes publiques
-DirectedGraph<int, ResourceNode>* LogFileParser::Parse() const
+DirectedGraph<int, RefererEdge>* LogFileParser::Parse() const
 // Algorithme :
 //
 {
     std::ifstream file(filename);
-    DirectedGraph<int, ResourceNode>* graph = new DirectedGraph<int, ResourceNode>;
+    DirectedGraph<int, RefererEdge>* graph = new DirectedGraph<int, RefererEdge>;
     if(file.good())
     {
         Request request;
@@ -43,7 +43,7 @@ DirectedGraph<int, ResourceNode>* LogFileParser::Parse() const
                 int uriIdentifier = StringCache::GetInstance().Put(request.GetUrl());
                 int refererIdentifier = StringCache::GetInstance().Put(request.GetReferer());
 
-                ResourceNode sourceNode(refererIdentifier, true);
+                RefererEdge sourceNode(refererIdentifier, true);
 
                 graph->Add(sourceNode, uriIdentifier);
             }

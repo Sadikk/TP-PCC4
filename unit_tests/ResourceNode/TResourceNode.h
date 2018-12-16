@@ -1,14 +1,14 @@
 /*************************************************************************
-                           TResourceNode  -  description
+                           TRefererEdge  -  description
                              -------------------
     début                : 09/12/18
     copyright            : (C) 2018$ par $AUTHOR$
     e-mail               : $EMAIL$
 *************************************************************************/
 
-//---------- Interface du module <TResourceNode> (fichier TResourceNode.h) ----------------
-#ifndef TResourceNode_H
-#define TResourceNode_H
+//---------- Interface du module <TRefererEdge> (fichier TRefererEdge.h) ----------------
+#ifndef TRefererEdge_H
+#define TRefererEdge_H
 
 //--------------------------------------------------- Interfaces utilisées
 
@@ -17,12 +17,12 @@
 //------------------------------------------------------------------ Types
 
 //------------------------------------------------------------------------
-// Rôle du module <TResourceNode>
+// Rôle du module <TRefererEdge>
 //
 //
 //------------------------------------------------------------------------
 
 int main();
 
-#endif // TResourceNode_H
+#endif // TRefererEdge_H
 

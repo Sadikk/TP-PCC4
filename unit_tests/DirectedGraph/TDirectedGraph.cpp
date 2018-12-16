@@ -18,7 +18,7 @@ using std::cout;
 //------------------------------------------------------ Include personnel
 #include "TDirectedGraph.h"
 #include "../../src/DirectedGraph/DirectedGraph.h"
-#include "../../src/ResourceNode/ResourceNode.h"
+#include "../../src/RefererEdge/RefererEdge.h"
 #include "../../src/StringCache/StringCache.h"
 ///////////////////////////////////////////////////////////////////  PRIVE
 //------------------------------------------------------------- Constantes
@@ -32,7 +32,7 @@ static void testAdd()
 {
     cout << "testAdd..." << "\r\n";
 
-    DirectedGraph<int, ResourceNode> graph;
+    DirectedGraph<int, RefererEdge> graph;
     std::ostream & os = cout;
 
 	int t0 = 0;
@@ -43,9 +43,9 @@ static void testAdd()
 	StringCache::GetInstance().Put("1");
 	StringCache::GetInstance().Put("2");
 
-	ResourceNode referer0(0, true);
-	ResourceNode referer1(1, true);
-	ResourceNode referer2(2, true);
+	RefererEdge referer0(0, true);
+	RefererEdge referer1(1, true);
+	RefererEdge referer2(2, true);
 
 
 	graph.Add(referer0, t1);
@@ -63,16 +63,16 @@ static void testSize()
 {
 	cout << "testSize..." << "\r\n";
 	//test should be extended. as we're not actively using it now, well... maybe next time ;)
-	DirectedGraph<int, ResourceNode> graph;
+	DirectedGraph<int, RefererEdge> graph;
 
     int t0 = 0;
     int t1 = 1;
     int t2 = 2;
 
 
-	ResourceNode referer0(0, true);
-	ResourceNode referer1(1, true);
-	ResourceNode referer2(2, true);
+	RefererEdge referer0(0, true);
+	RefererEdge referer1(1, true);
+	RefererEdge referer2(2, true);
 
 
 	graph.Add(referer0, t1);

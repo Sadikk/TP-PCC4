@@ -31,7 +31,7 @@ static void testParse()
     cout << "testParse..." << "\r\n";
 
     LogFileParser parser("/tmp/anonyme_splitaa");
-    DirectedGraph<int, ResourceNode>* graph = parser.Parse();
+    DirectedGraph<int, RefererEdge>* graph = parser.Parse();
 
     graph->Serialize(cout);
     /*for (auto pair : *graph->Top(10))

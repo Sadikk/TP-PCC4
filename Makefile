@@ -8,8 +8,8 @@ TEST_FOLDER         = unit_tests
 EXEC                = analog
 
 MAIN_TEST_MODULE    = Main
-MODULES_NAME        = LogFileParser DirectedGraph ResourceNode Request StringCache Cache ExtensionFilter HourFilter AbstractFilter
-MODULES_NAME_TEST   = LogFileParser DirectedGraph ResourceNode Request StringCache Cache ExtensionFilter HourFilter AbstractFilter
+MODULES_NAME        = LogFileParser DirectedGraph RefererEdge Request StringCache Cache ExtensionFilter HourFilter AbstractFilter
+MODULES_NAME_TEST   = LogFileParser DirectedGraph RefererEdge Request StringCache Cache ExtensionFilter HourFilter AbstractFilter
 
 ADDITIONAL_FOLDER   =
 

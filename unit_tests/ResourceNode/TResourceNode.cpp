@@ -1,5 +1,5 @@
 /*************************************************************************
-                           TResourceNode  -  description
+                           TRefererEdge  -  description
                              -------------------
     début                : 09/12/18
     copyright            : (C) 2018$ par $AUTHOR$
@@ -15,8 +15,8 @@
 
 using std::cout;
 //------------------------------------------------------ Include personnel
-#include "TResourceNode.h"
-#include "../../src/ResourceNode/ResourceNode.h"
+#include "TRefererEdge.h"
+#include "../../src/RefererEdge/RefererEdge.h"
 #include "../../src/StringCache/StringCache.h"
 ///////////////////////////////////////////////////////////////////  PRIVE
 //------------------------------------------------------------- Constantes
@@ -31,14 +31,14 @@ static void testGetLabel()
     cout << "testGetLabel..." << "\r\n";
     int id = StringCache::GetInstance().Put("za");
 
-    ResourceNode node(id, true);
+    RefererEdge node(id, true);
 
     assert(node.GetLabel() == "0");
     node.Hit();
 
     assert(node.GetLabel() == "1");
 
-    ResourceNode node2(id, false);
+    RefererEdge node2(id, false);
 
     assert(node2.GetLabel() != "za");
 
