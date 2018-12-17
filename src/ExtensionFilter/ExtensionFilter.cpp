@@ -21,7 +21,7 @@
 
 //----------------------------------------------------- Méthodes publiques
 bool ExtensionFilter::Check(Request &request) const{
-//Renvoie true si l'extension a été trouvé
+//Renvoie false si l'extension a été trouvé
   #ifdef MAP
       cout << "Appel a la methode Check de <ExtensionFilter>" << endl;
   #endif
@@ -29,7 +29,7 @@ bool ExtensionFilter::Check(Request &request) const{
   std::string url = request.GetUrl();
   int hasExtension = url.find(extension);
   // La méthode find renvoye -1 dans le cas ou elle ne trouve rien
-  return hasExtension != -1;
+  return hasExtension == -1;
 
 }
 //------------------------------------------------- Surcharge d'opérateurs
