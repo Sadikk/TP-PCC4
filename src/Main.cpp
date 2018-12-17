@@ -149,7 +149,7 @@ int main ( int argc, char *argv[] )
     LogFileParser parser(inputFile, options);
     char * outputFile = getCmdOption(argv, argv + argc, "-g");
 
-    if(strcmp(inputFile.c_str(), outputFile) == 0) {
+    if(outputFile && strcmp(inputFile.c_str(), outputFile) == 0) {
         usage("analog");
         return 0;
     }
@@ -162,7 +162,7 @@ int main ( int argc, char *argv[] )
     }
     delete top;
 
-     if (outputFile)
+    if (outputFile)
     {
         if (fileExists(outputFile))
         {
