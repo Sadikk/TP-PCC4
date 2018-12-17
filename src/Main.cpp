@@ -17,6 +17,7 @@
 #include <fstream>
 #include <sstream>
 #include <sys/stat.h>
+#include <math.h>
 //------------------------------------------------------ Include personnel
 #include "AbstractFilter/AbstractFilter.h"
 #include "HourFilter/HourFilter.h"
@@ -108,47 +109,49 @@ int main ( int argc, char *argv[] )
 
 
     char * hour = getCmdOption(argv, argv + argc, "-t");
-    if (hour)
-    {
-        int intHour;
+      if(hour){
+        double doubleHour;
         try {
-            intHour = std::stoi(hour);
+            doubleHour = std::stod(hour);
         }
+
         catch (const std::invalid_argument& e)
         {
-            std::cerr << "error : Time filter should be an integer" << std::endl;
+            //std::cout << "error : Time filter should be an integer" << std::endl;
+            usage("analog");
+            return 0;
         }
         catch (const std::out_of_range& e)
         {
-            std::cerr << "error : Time filter should be between 0 and 24" << std::endl;
-        }
-
-        if (intHour)
-        {
-            if (intHour < 0 || intHour > 24)
-            {
-                std::cerr << "error : Time filter should be between 0 and 24" << std::endl;
-                return 0;
-            } else {
-                options.push_back(new HourFilter(intHour));
-            }
-        } else
-        {
+            //std::cout << "error : Time filter should be between 0 and 24" << std::endl;
+            usage("analog");
             return 0;
         }
 
+          if(!(doubleHour == floor(doubleHour))){ // On vérifie que c'est bien un entier
+            usage("analog");
+            return 0;
+        }
+        int intHour = (int)doubleHour;
+        if(intHour >= 0 && intHour <=23){
+                options.push_back(new HourFilter(doubleHour));
+              }
+        else{
+          usage("analog");
+          return 0;
+        }
     }
 
     std::string inputFile = argv[argc - 1];
     if (!fileExists(inputFile.c_str())) {
-        std::cerr << "error : inputFile " << inputFile << " doesn't seem to exist" << std::endl;
+        std::cout << "error : inputFile " << inputFile << " doesn't seem to exist" << std::endl;
         return 0;
     }
 
     LogFileParser parser(inputFile, options);
     char * outputFile = getCmdOption(argv, argv + argc, "-g");
 
-    if(strcmp(inputFile.c_str(),outputFile) == 0)
+    if(outputFile!= nullptr && strcmp(inputFile.c_str(),outputFile) == 0)
     {
       usage("analog");
       return 0;
