@@ -128,13 +128,13 @@ int main ( int argc, char *argv[] )
             if (intHour < 0 || intHour > 24)
             {
                 std::cerr << "error : Time filter should be between 0 and 24" << std::endl;
-                throw std::out_of_range("aborting");
+                return 0;
             } else {
                 options.push_back(new HourFilter(intHour));
             }
         } else
         {
-            throw std::out_of_range("aborting");
+            return 0;
         }
 
     }
@@ -142,11 +142,18 @@ int main ( int argc, char *argv[] )
     std::string inputFile = argv[argc - 1];
     if (!fileExists(inputFile.c_str())) {
         std::cerr << "error : inputFile " << inputFile << " doesn't seem to exist" << std::endl;
-        throw std::invalid_argument("aborting");
+        return 0;
     }
 
     LogFileParser parser(inputFile, options);
     char * outputFile = getCmdOption(argv, argv + argc, "-g");
+
+    if(strcmp(inputFile.c_str(),outputFile) == 0)
+    {
+      std::cout << "Le nom du fichier ne peut pas etre vide" << std::endl;
+      return 0;
+    }
+    
     DirectedGraph<int, RefererEdge>* graph = parser.Parse();
 
     std::vector<std::pair<int,int>>* top = graph->Top(TOP_SIZE);
@@ -154,7 +161,8 @@ int main ( int argc, char *argv[] )
         std::cout << StringCache::GetInstance().Get(pair.first) << " (" << pair.second << " hits)" << std::endl;
     }
     delete top;
-    if (outputFile)
+
+     if (outputFile)
     {
         if (fileExists(outputFile))
         {
@@ -181,4 +189,3 @@ int main ( int argc, char *argv[] )
     delete graph;
 
 } //----- fin de main
-
