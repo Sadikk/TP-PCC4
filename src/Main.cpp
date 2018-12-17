@@ -17,6 +17,7 @@
 #include <fstream>
 #include <sstream>
 #include <sys/stat.h>
+#include <cstring>
 //------------------------------------------------------ Include personnel
 #include "AbstractFilter/AbstractFilter.h"
 #include "HourFilter/HourFilter.h"
@@ -148,10 +149,9 @@ int main ( int argc, char *argv[] )
     LogFileParser parser(inputFile, options);
     char * outputFile = getCmdOption(argv, argv + argc, "-g");
 
-    if(strcmp(inputFile.c_str(),outputFile) == 0)
-    {
-      usage("analog");
-      return 0;
+    if(strcmp(inputFile.c_str(), outputFile) == 0) {
+        usage("analog");
+        return 0;
     }
 
     DirectedGraph<int, RefererEdge>* graph = parser.Parse();
