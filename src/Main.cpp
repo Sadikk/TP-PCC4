@@ -150,10 +150,10 @@ int main ( int argc, char *argv[] )
 
     if(strcmp(inputFile.c_str(),outputFile) == 0)
     {
-      std::cout << "Le nom du fichier ne peut pas etre vide" << std::endl;
+      usage("analog");
       return 0;
     }
-    
+
     DirectedGraph<int, RefererEdge>* graph = parser.Parse();
 
     std::vector<std::pair<int,int>>* top = graph->Top(TOP_SIZE);
