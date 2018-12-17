@@ -158,7 +158,9 @@ int main ( int argc, char *argv[] )
 
     std::vector<std::pair<int,int>>* top = graph->Top(TOP_SIZE);
     for (std::pair<int, int> pair : *top) {
-        std::cout << StringCache::GetInstance().Get(pair.first) << " (" << pair.second << " hits)" << std::endl;
+        if (pair.second > 0) {
+            std::cout << StringCache::GetInstance().Get(pair.first) << " (" << pair.second << " hits)" << std::endl;
+        }
     }
     delete top;
 
