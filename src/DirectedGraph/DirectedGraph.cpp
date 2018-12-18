@@ -58,6 +58,7 @@ void DirectedGraph<S, T>::Serialize(std::ostream &os) const
 // Algorithme :
 //
 {
+    os << "digraph {" << std::endl;
     for (std::pair<S, std::unordered_set<T>> const& pair : adjacencyMap)
     {
         os << pair.first;
@@ -65,6 +66,7 @@ void DirectedGraph<S, T>::Serialize(std::ostream &os) const
             os << pair.second;
         }
     }
+    os << "}" << std::endl;
 }
 
 template <>
@@ -72,6 +74,7 @@ void DirectedGraph<int, RefererEdge>::Serialize(std::ostream &os) const
 // Algorithme :
 //
 {
+    os << "digraph {" << std::endl;
     for (std::pair<int, std::unordered_set<RefererEdge>> const& pair : adjacencyMap)
     {
         os << "\tnode" << pair.first << " [label=\"" << StringCache::GetInstance().Get(pair.first) << "\"]" << std::endl;
@@ -79,6 +82,7 @@ void DirectedGraph<int, RefererEdge>::Serialize(std::ostream &os) const
             os <<  "\tnode" << referer.GetId() << " -> " << "node" << pair.first << " [label=\"" << referer.GetLabel() << "\"]" << std::endl;
         }
     }
+    os << "}" << std::endl;
 }
 
 template <typename S, typename T>

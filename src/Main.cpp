@@ -17,6 +17,7 @@
 #include <fstream>
 #include <sstream>
 #include <sys/stat.h>
+#include <cstring>
 #include <math.h>
 //------------------------------------------------------ Include personnel
 #include "AbstractFilter/AbstractFilter.h"
@@ -151,21 +152,22 @@ int main ( int argc, char *argv[] )
     LogFileParser parser(inputFile, options);
     char * outputFile = getCmdOption(argv, argv + argc, "-g");
 
-    if(outputFile!= nullptr && strcmp(inputFile.c_str(),outputFile) == 0)
-    {
-      usage("analog");
-      return 0;
+    if(outputFile && strcmp(inputFile.c_str(), outputFile) == 0) {
+        usage("analog");
+        return 0;
     }
 
     DirectedGraph<int, RefererEdge>* graph = parser.Parse();
 
     std::vector<std::pair<int,int>>* top = graph->Top(TOP_SIZE);
     for (std::pair<int, int> pair : *top) {
-        std::cout << StringCache::GetInstance().Get(pair.first) << " (" << pair.second << " hits)" << std::endl;
+        if (pair.second > 0) {
+            std::cout << StringCache::GetInstance().Get(pair.first) << " (" << pair.second << " hits)" << std::endl;
+        }
     }
     delete top;
 
-     if (outputFile)
+    if (outputFile)
     {
         if (fileExists(outputFile))
         {
