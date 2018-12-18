@@ -118,13 +118,13 @@ int main ( int argc, char *argv[] )
 
         catch (const std::invalid_argument& e)
         {
-            //std::cout << "error : Time filter should be an integer" << std::endl;
+            std::cout << "warning : Time filter should be an integer" << std::endl;
             usage("analog");
             return 0;
         }
         catch (const std::out_of_range& e)
         {
-            //std::cout << "error : Time filter should be between 0 and 24" << std::endl;
+            std::cout << "warning : Time filter should be between 0 and 24" << std::endl;
             usage("analog");
             return 0;
         }
@@ -145,7 +145,7 @@ int main ( int argc, char *argv[] )
 
     std::string inputFile = argv[argc - 1];
     if (!fileExists(inputFile.c_str())) {
-        std::cout << "error : inputFile " << inputFile << " doesn't seem to exist" << std::endl;
+        std::cout << "error : inputFile " << inputFile << " doesn't seem to exist, aborting" << std::endl;
         return 0;
     }
 
@@ -157,7 +157,20 @@ int main ( int argc, char *argv[] )
         return 0;
     }
 
-    DirectedGraph<int, RefererEdge>* graph = parser.Parse();
+    DirectedGraph<int, RefererEdge>* graph;
+    try {
+        graph  = parser.Parse();
+    }
+    catch (std::invalid_argument)
+    {
+        std::cerr << "error : unable to open input file, aborting" << std::endl;
+        return 0;
+    }
+    catch (std::range_error)
+    {
+        std::cerr << "error : file seems corrupted. please enter a correctly formatted apache log" << std::endl;
+        return 0;
+    }
 
     std::vector<std::pair<int,int>>* top = graph->Top(TOP_SIZE);
     for (std::pair<int, int> pair : *top) {

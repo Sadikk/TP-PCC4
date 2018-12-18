@@ -53,6 +53,10 @@ DirectedGraph<int, RefererEdge>* LogFileParser::Parse() const
                 graph->Add(sourceNode, uriIdentifier);
             }
         }
+        if (file.fail() && !file.eof())
+        {
+            throw std::range_error( "file corrupted ");
+        }
     }
     else {
         throw std::invalid_argument( "unable to open received file" );
