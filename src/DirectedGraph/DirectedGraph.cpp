@@ -59,7 +59,7 @@ void DirectedGraph<S, T>::Serialize(std::ostream &os) const
 //
 {
     os << "digraph {" << std::endl;
-    for (std::pair<S, std::unordered_set<T>> const& pair : adjacencyMap)
+    for (std::pair<const S, std::unordered_set<T>> const& pair : adjacencyMap)
     {
         os << pair.first;
         for (const T& referer: pair.second) {
@@ -75,7 +75,7 @@ void DirectedGraph<int, RefererEdge>::Serialize(std::ostream &os) const
 //
 {
     os << "digraph {" << std::endl;
-    for (std::pair<int, std::unordered_set<RefererEdge>> const& pair : adjacencyMap)
+    for (std::pair<const int, std::unordered_set<RefererEdge>> const& pair : adjacencyMap)
     {
         os << "\tnode" << pair.first << " [label=\"" << StringCache::GetInstance().Get(pair.first) << "\"]" << std::endl;
         for (const RefererEdge& referer: pair.second) {

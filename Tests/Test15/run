@@ -1,1 +1,1 @@
-../../bin/analog -x -u dummy court.log
+../../bin/analog -t 12 court.log
