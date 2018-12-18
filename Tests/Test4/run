@@ -1,1 +1,1 @@
-../../bin/analog -t 12 -g court.dot /tmp/anonyme.log 
+../../bin/analog -g court.dot /tmp/anonyme.log 
