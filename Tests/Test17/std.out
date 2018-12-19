@@ -1,3 +1,4 @@
+warning : Time filter should be between 0 and 24
 Utilisation : analog[options] inputFile.log
 Analyse un fichier de logs Apache/Nginx
 Options:

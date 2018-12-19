@@ -1,1 +1,3 @@
 Ce teste demande confirmation à l’utilisateur dans le cas où il y a déjà un fichier avec le nom choisi
+ATTENTION : créer un fichier court.dot copie de court.dot.outfile avant de lancer ce test, sinon il échoue
+automatiquement
