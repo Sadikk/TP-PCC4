@@ -32,12 +32,17 @@ void DirectedGraph<S, T>::Add(T& from, S& to)
 {
     auto p = (adjacencyMap[to]).insert(from);
     std::cout << typeid(p).name();
+
+    auto w = nodesWeight.insert(std::pair<S, int>(to, 1));
+    if (!w.second) {
+        w.first->second++;
+    }
 } //----- Fin de Add
 
 template<>
 void DirectedGraph<int, RefererEdge>::Add(RefererEdge& from, int& to)
-// Algorithme :
-//
+// Algorithme : Spécialisation de l'ajout au graphe afin de prendre en compte le besoin spécifique du nombre de hits
+// sur les referers
 {
     std::pair<std::unordered_map<int, std::unordered_set<RefererEdge>>::iterator, bool> p = adjacencyMap.insert(std::pair<int, std::unordered_set<RefererEdge>>(to, std::unordered_set<RefererEdge>()));
     auto referer_exist =  p.first->second.insert(from);
@@ -96,7 +101,7 @@ int DirectedGraph<S, T>::Size() const
 
 template <typename S, typename T>
 std::vector<std::pair<S, int>>* DirectedGraph<S, T>::Top(int n) const
-// Algorithme :
+// Algorithme : Effectue une copie des poids dans un vector pour un tri rapide et retourne les n premiers éléments
 //
 {
     std::vector<std::pair<S, int>>* elems = new std::vector<std::pair<S,int>>(nodesWeight.begin(), nodesWeight.end());
@@ -164,6 +169,7 @@ void swap(DirectedGraph<S, T> & first, DirectedGraph<S, T> & second)
     using std::swap;
 
     swap(first.adjacencyMap, second.adjacencyMap);
+    swap(first.nodesWeight, second.nodesWeight);
 }
 
 

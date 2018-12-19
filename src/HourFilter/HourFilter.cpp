@@ -21,21 +21,24 @@
 //----------------------------------------------------------------- PUBLIC
 
 //----------------------------------------------------- Méthodes publiques
-bool HourFilter::Check(Request &request) const{
-//Cette méthode vérifier si le Request request a été fait dans l'intervalle
-// [targetHour, targetHour+1[
-// On suppose que c'est une heure du jour courant
-  #ifdef MAP
-      cout << "Appel a la methode Check de <HourFilter>" << endl;
-  #endif
+bool HourFilter::Check(const Request &request) const
+// Algorithme :
+//
+{
   long timestamp = request.GetTimestamp();
   struct tm *timeinfo = localtime(&timestamp);
-  int request_time = timeinfo->tm_hour;
-  return request_time >= startHour && request_time < endHour;
+  int request_hour = timeinfo->tm_hour;
+  return request_hour >= startHour && request_hour < endHour;
 
 }
 //------------------------------------------------- Surcharge d'opérateurs
-
+HourFilter & HourFilter::operator = (  HourFilter other )
+// Algorithme :
+//
+{
+    swap(*this, other);
+    return *this;
+}
 //-------------------------------------------- Constructeurs - destructeur
 HourFilter::HourFilter ( const HourFilter & other )
 // Algorithme :
@@ -44,6 +47,8 @@ HourFilter::HourFilter ( const HourFilter & other )
 #ifdef MAP
     cout << "Appel au constructeur de copie de <HourFilter>" << endl;
 #endif
+    startHour = other.startHour;
+    endHour = other.endHour;
 } //----- Fin de HourFilter (constructeur de copie)
 
 
@@ -83,3 +88,10 @@ HourFilter::~HourFilter ( )
 
 
 //----------------------------------------------------- Méthodes protégées
+void swap(HourFilter & first, HourFilter & second)
+{
+    using std::swap;
+
+    swap(first.startHour, second.startHour);
+    swap(first.endHour, second.endHour);
+}

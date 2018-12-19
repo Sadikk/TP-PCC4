@@ -22,8 +22,8 @@
 //------------------------------------------------------------------------
 // Rôle de la classe <DirectedGraph>
 //
-// Représente un graphe orienté de noeuds de type T.
-// T doit implémenter les operateurs <<, <, ==
+// Représente un graphe orienté de noeuds de type S et d'arcs T.
+// S et T doivent implémenter les operateurs <<, <, ==
 //------------------------------------------------------------------------
 template <typename S, typename T>
 class DirectedGraph;
@@ -38,13 +38,13 @@ class DirectedGraph {
 
 public:
 //----------------------------------------------------- Méthodes publiques
-    void Add(T& from, S& to);
+    void Add(T& edge, S& to);
     // Mode d'emploi :
-    //      Ajoute un arc au graphe du noeud 'from' au noeud 'to'.
-    //          - from : objet de départ
+    //      Ajoute un arc au graphe ayant pour cible le noeud 'to'.
+    //          - edge : arc
     //          - to : objet d'arrivée
     // Contrat :
-    //      from et to sont des objets stables non nuls
+    //      edge et to sont des objets stables non nuls
 
     void Serialize(std::ostream& os) const;
     // Mode d'emploi :
@@ -54,7 +54,7 @@ public:
 
     int Size() const;
     // Mode d'emploi :
-    //      Retourne le nombre de noeuds ayant au moins un noeud enfant
+    //      Retourne le nombre de noeuds ayant au moins un noeud enfant qui le cible
     // Contrat :
     //
 

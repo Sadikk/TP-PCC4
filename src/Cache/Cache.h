@@ -22,6 +22,7 @@
 // Représente une mémoire cache associant un identifiant entier à un objet
 // quelconque. Permet de sauvegarder de l'espace mémoire si l'objet est
 // volumineux, en utilisant uniquement un entier lors des manipulations.
+// Un même objet possède un identifiant unique.
 //------------------------------------------------------------------------
 template <typename T>
 class Cache;
@@ -37,13 +38,20 @@ public:
 //----------------------------------------------------- Méthodes publiques
     int Put ( const T item );
     // Mode d'emploi :
-    //
+    // Stocke un objet en cache
+    // Params :
+    //      - item : objet à ajouter
+    // Retourne: l'identifiant entier correspondant
     // Contrat :
     //
 
     T Get (const int & identifier) const;
     // Mode d'emploi :
-    //
+    // Récupère un objet en cache à partir de son identifiant
+    // Params :
+    //      - identifier : identifiant entier de l'objet à récupérer
+    // Retourne : l'objet récupéré.
+    // Note : Soulève une exception out_of_range si l'identifiant n'est pas connu du cache
     // Contrat :
     //
 

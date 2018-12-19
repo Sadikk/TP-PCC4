@@ -173,28 +173,29 @@ std::istream& operator>>(std::istream& str, Request& request)
 } //----- Fin de operator >>
 
 
-  std::ostream& operator<<(std::ostream & os, const Request& request) {
-      struct tm *timeinfo = localtime(&request.timestamp);
-      char stringedtime[30];
-      strftime(stringedtime, 30, "%d/%b/%Y:%H:%M:%S %z", timeinfo);
-      os << request.ipAddress << " ";
-      os << request.logUsername << " ";
-      os << request.authUsername << " ";
-      os << "[" << stringedtime << "] ";
-      os << '"' << request.unparseMethod(request.method) << " ";
-      os << request.url << " ";
-      os << request.httpVersion << "\" ";
-      os << request.statusCode << " ";
-      if (request.size == 0)
-      {
-          os << "- ";
-      } else {
-          os << request.size << " ";
-      }
-      os << '"' << request.referer << "\" ";
-      os << '"' << request.userAgent << '"';
-      return os;
+std::ostream& operator<<(std::ostream & os, const Request& request) {
+  struct tm *timeinfo = localtime(&request.timestamp);
+  char stringedtime[30];
+  strftime(stringedtime, 30, "%d/%b/%Y:%H:%M:%S %z", timeinfo);
+  os << request.ipAddress << " ";
+  os << request.logUsername << " ";
+  os << request.authUsername << " ";
+  os << "[" << stringedtime << "] ";
+  os << '"' << request.unparseMethod(request.method) << " ";
+  os << request.url << " ";
+  os << request.httpVersion << "\" ";
+  os << request.statusCode << " ";
+  if (request.size == 0)
+  {
+      os << "- ";
+  } else {
+      os << request.size << " ";
   }
+  os << '"' << request.referer << "\" ";
+  os << '"' << request.userAgent << '"';
+  return os;
+}
+
 //-------------------------------------------- Constructeurs - destructeur
 Request::Request ( const Request & other )
 // Algorithme :

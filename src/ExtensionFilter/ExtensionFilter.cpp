@@ -20,19 +20,24 @@
 //----------------------------------------------------------------- PUBLIC
 
 //----------------------------------------------------- Méthodes publiques
-bool ExtensionFilter::Check(Request &request) const{
-//Renvoie false si l'extension a été trouvé
-  #ifdef MAP
-      cout << "Appel a la methode Check de <ExtensionFilter>" << endl;
-  #endif
-
+bool ExtensionFilter::Check(const Request &request) const
+// Algorithme :
+//
+{
   std::string url = request.GetUrl();
   int hasExtension = url.find(extension);
   // La méthode find renvoye -1 dans le cas ou elle ne trouve rien
   return hasExtension == -1;
-
 }
 //------------------------------------------------- Surcharge d'opérateurs
+ExtensionFilter & ExtensionFilter::operator = (  ExtensionFilter other )
+// Algorithme :
+//
+{
+  swap(*this, other);
+  return *this;
+}
+
 
 //-------------------------------------------- Constructeurs - destructeur
 ExtensionFilter::ExtensionFilter ( const ExtensionFilter & other )
@@ -40,19 +45,10 @@ ExtensionFilter::ExtensionFilter ( const ExtensionFilter & other )
 //
 {
 #ifdef MAP
-    cout << "Appel au constructeur de copie de <ExtensionFilter>" << endl;
+  cout << "Appel au constructeur de copie de <ExtensionFilter>" << endl;
 #endif
+  extension = other.extension;
 } //----- Fin de ExtensionFilter (constructeur de copie)
-
-
-ExtensionFilter::ExtensionFilter ( )
-// Algorithme :
-//
-{
-#ifdef MAP
-    cout << "Appel au constructeur de <ExtensionFilter>" << endl;
-#endif
-} //----- Fin de ExtensionFilter
 
 ExtensionFilter::ExtensionFilter (string ext) : extension(ext)
 // Algorithme :
@@ -78,3 +74,8 @@ ExtensionFilter::~ExtensionFilter ( )
 //------------------------------------------------------------------ PRIVE
 
 //----------------------------------------------------- Méthodes protégées
+void swap(ExtensionFilter & first, ExtensionFilter & second) {
+  using std::swap;
+
+  swap(first.extension, second.extension);
+}

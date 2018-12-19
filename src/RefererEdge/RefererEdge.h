@@ -20,7 +20,8 @@
 //------------------------------------------------------------------------
 // Rôle de la classe <RefererEdge>
 //
-// Représente un noeud de graphe dans le contexte de l'application
+// Représente un arc de graphe dans le contexte de l'application, associant
+// un referer source à son nombre de hits
 //------------------------------------------------------------------------
 
 class RefererEdge {
@@ -55,8 +56,8 @@ public:
 
     friend bool operator< (const RefererEdge& a, const RefererEdge& b)
     {
-        return a.hitCount < b.hitCount || (
-                !(b.hitCount < a.hitCount) && a.id < b.id
+        return a.id < b.id || (
+                !(b.id < a.id) && a.hitCount < b.hitCount
         );
     }
 

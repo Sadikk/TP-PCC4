@@ -19,8 +19,8 @@
 
 //------------------------------------------------------------------------
 // Rôle de la classe <HourFilter>
-// Cette classe est instanciée avec une heure donnée startHour et vérifie si une request
-// a eu lieu entre startHour et startHour + 1.
+//
+// Classe représentant un filtre sur l'heure d'une requête
 //------------------------------------------------------------------------
 
 class HourFilter : public AbstractFilter
@@ -29,11 +29,17 @@ class HourFilter : public AbstractFilter
 
 public:
 //----------------------------------------------------- Méthodes publiques
-    bool Check(Request &request) const;
-
+    bool Check(const Request &request) const;
+    // Mode d'emploi :
+    //      Vérifie si une requête est dans la bonne plage horaire ou non
+    // Returns :
+    //      - true si la requête est dans la plage horaire [startHour;endHour[
+    //      - false sinon
+    // Contrat :
+    //      request est un objet Request stable
 
 //------------------------------------------------- Surcharge d'opérateurs
-    HourFilter & operator = ( const HourFilter & other );
+    HourFilter & operator = ( HourFilter other );
     // Mode d'emploi :
     //
     // Contrat :
@@ -65,11 +71,10 @@ public:
 
 protected:
 //----------------------------------------------------- Méthodes protégées
-
+    friend void swap(HourFilter & first, HourFilter & second);
 //----------------------------------------------------- Attributs protégés
-
-int startHour;
-int endHour;
+    int startHour;
+    int endHour;
 
 };
 

@@ -25,7 +25,7 @@
 // Rôle de la classe <LogFileParser>
 //
 // Représente la classe principale de l'application s'occupant de parser
-// un fichier de logs selon des options définies
+// un fichier de logs selon des options définies et de fournir le résultat
 //------------------------------------------------------------------------
 
 class LogFileParser {
@@ -36,7 +36,7 @@ public:
     DirectedGraph<int, RefererEdge>* Parse() const;
     // Mode d'emploi :
     //      Génére un graphe représentant le fichier de log parsé et filtré
-    // selon les options spécifiés
+    // selon les options spécifiées
     // Contrat :
     //      La désallocation mémoire du graphe est laissé à la charge de
     // l'utilisateur
@@ -59,7 +59,9 @@ public:
 
     LogFileParser(std::string inputFile, std::vector<AbstractFilter*> filters = {});
     // Mode d'emploi :
-    //
+    // Params :
+    //      - inputFile : chemin du fichier de log à parser
+    //      - filters : options de filtrage à appliquer lors du traitement
     // Contrat :
     //      inputFile doit cibler un fichier de log existant et bien formé
 
