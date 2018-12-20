@@ -144,6 +144,7 @@ int main ( int argc, char *argv[] )
     std::string inputFile = argv[argc - 1];
     if (!fileExists(inputFile.c_str())) {
         std::cerr << "error : inputFile " << inputFile << " doesn't seem to exist, aborting" << std::endl;
+        usage("analog");
         return 0;
     }
 
@@ -163,11 +164,13 @@ int main ( int argc, char *argv[] )
     catch (std::invalid_argument)
     {
         std::cerr << "error : unable to open input file, aborting" << std::endl;
+        usage("analog");
         return 0;
     }
     catch (std::range_error)
     {
         std::cerr << "error : file seems corrupted. please enter a correctly formatted apache log" << std::endl;
+        usage("analog");
         return 0;
     }
 

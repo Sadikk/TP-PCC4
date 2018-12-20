@@ -1,1 +1,1 @@
-../../bin/analog -g court.dot /tmp/anonyme.log 
+cp court.dot.outfile court.dot; ../../bin/analog -g court.dot /tmp/anonyme.log
