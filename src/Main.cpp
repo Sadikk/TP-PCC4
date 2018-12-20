@@ -17,6 +17,8 @@
 #include <fstream>
 #include <sstream>
 #include <sys/stat.h>
+#include <cstring>
+#include <math.h>
 //------------------------------------------------------ Include personnel
 #include "AbstractFilter/AbstractFilter.h"
 #include "HourFilter/HourFilter.h"
@@ -60,9 +62,9 @@ void usage(std::string progName)
          "Analyse un fichier de logs Apache/Nginx" << std::endl <<
          "Options:" << std::endl <<
          "-h                Affiche cette aide" << std::endl <<
-         "-t hour           Inclus seulement les requêtes d'heures [hour; hour+1[" << std::endl <<
+         "-t hour           Inclut seulement les requêtes d'heures [hour; hour+1[. hour doit être compris entre 0 et 24" << std::endl <<
          "-g output.dot     Exporte le graphe au format GraphViz dans le fichier de sortie" << std::endl <<
-         "-e                Exclut les requêtes css/js/images" << std::endl;
+         "-e                Exclut les requêtes css/js/images du traitement" << std::endl;
 }
 //////////////////////////////////////////////////////////////////  PUBLIC
 //---------------------------------------------------- Fonctions publiques
@@ -108,52 +110,78 @@ int main ( int argc, char *argv[] )
 
 
     char * hour = getCmdOption(argv, argv + argc, "-t");
-    if (hour)
-    {
-        int intHour;
-        try {
-            intHour = std::stoi(hour);
-        }
-        catch (const std::invalid_argument& e)
-        {
-            std::cerr << "error : Time filter should be an integer" << std::endl;
-        }
-        catch (const std::out_of_range& e)
-        {
-            std::cerr << "error : Time filter should be between 0 and 24" << std::endl;
-        }
+      if(hour) {
+          double doubleHour;
+          try {
+              doubleHour = std::stod(hour);
+          }
 
-        if (intHour)
-        {
-            if (intHour < 0 || intHour > 24)
-            {
-                std::cerr << "error : Time filter should be between 0 and 24" << std::endl;
-                throw std::out_of_range("aborting");
-            } else {
-                options.push_back(new HourFilter(intHour));
-            }
-        } else
-        {
-            throw std::out_of_range("aborting");
-        }
+          catch (const std::invalid_argument &e) {
+              std::cout << "warning : Time filter should be an integer" << std::endl;
+              usage("analog");
+              return 0;
+          }
+          catch (const std::out_of_range &e) {
+              std::cout << "warning : Time filter should be between 0 and 24" << std::endl;
+              usage("analog");
+              return 0;
+          }
 
-    }
+          if (!(doubleHour == floor(doubleHour))) { // On vérifie que c'est bien un entier
+              usage("analog");
+              return 0;
+          }
+          int intHour = (int) doubleHour;
+          if (intHour >= 0 && intHour <= 23) {
+              options.push_back(new HourFilter(doubleHour));
+          } else {
+              std::cout << "warning : Time filter should be between 0 and 24" << std::endl;
+              usage("analog");
+              return 0;
+          }
+      }
 
     std::string inputFile = argv[argc - 1];
     if (!fileExists(inputFile.c_str())) {
-        std::cerr << "error : inputFile " << inputFile << " doesn't seem to exist" << std::endl;
-        throw std::invalid_argument("aborting");
+        std::cerr << "error : inputFile " << inputFile << " doesn't seem to exist, aborting" << std::endl;
+        usage("analog");
+        return 0;
     }
 
     LogFileParser parser(inputFile, options);
     char * outputFile = getCmdOption(argv, argv + argc, "-g");
-    DirectedGraph<int, RefererEdge>* graph = parser.Parse();
+
+    if(outputFile && strcmp(inputFile.c_str(), outputFile) == 0) {
+        std::cerr << "error : outputFile argument seems missing, aborting" << std::endl;
+        usage("analog");
+        return 0;
+    }
+
+    DirectedGraph<int, RefererEdge>* graph;
+    try {
+        graph  = parser.Parse();
+    }
+    catch (std::invalid_argument)
+    {
+        std::cerr << "error : unable to open input file, aborting" << std::endl;
+        usage("analog");
+        return 0;
+    }
+    catch (std::range_error)
+    {
+        std::cerr << "error : file seems corrupted. please enter a correctly formatted apache log" << std::endl;
+        usage("analog");
+        return 0;
+    }
 
     std::vector<std::pair<int,int>>* top = graph->Top(TOP_SIZE);
     for (std::pair<int, int> pair : *top) {
-        std::cout << StringCache::GetInstance().Get(pair.first) << " (" << pair.second << " hits)" << std::endl;
+        if (pair.second > 0) {
+            std::cout << StringCache::GetInstance().Get(pair.first) << " (" << pair.second << " hits)" << std::endl;
+        }
     }
     delete top;
+
     if (outputFile)
     {
         if (fileExists(outputFile))
@@ -181,4 +209,3 @@ int main ( int argc, char *argv[] )
     delete graph;
 
 } //----- fin de main
-

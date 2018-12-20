@@ -27,7 +27,7 @@ class AbstractFilter {
 
 public:
 //----------------------------------------------------- Méthodes publiques
-    virtual bool Check(Request & request) const = 0;
+    virtual bool Check(const Request & request) const = 0;
     // Mode d'emploi :
     //      Vérifie si une requête valide le filtre ou non (ie. vérifie les
     // conditions ou non)

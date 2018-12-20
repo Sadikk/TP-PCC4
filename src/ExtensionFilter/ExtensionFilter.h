@@ -19,10 +19,8 @@
 
 //------------------------------------------------------------------------
 // Rôle de la classe <ExtensionFilter>
-//Cette classe est instanciée avec une extension donnée e possede une seule méthode
-//Check qui vérifie si une Request donnée possède l'extension
-// Ex : ExtensionFilter jsFilter(".js") et jsFilter.Check(Request) vérifie
-//si Request possède l'extension .js
+//
+// Classe représentant un filtre sur l'extension du fichier cible d'une requête
 //------------------------------------------------------------------------
 
 class ExtensionFilter : public AbstractFilter
@@ -31,11 +29,17 @@ class ExtensionFilter : public AbstractFilter
 
 public:
 //----------------------------------------------------- Méthodes publiques
-    bool Check(Request &request) const;
-
+    bool Check(const Request &request) const;
+    // Mode d'emploi :
+    //      Vérifie si une requête possède l'extension ou non
+    // Returns :
+    //      - true si la requête ne possède pas de l'extension
+    //      - false si la requête possède l'extension
+    // Contrat :
+    //      request est un objet Request stable
 
 //------------------------------------------------- Surcharge d'opérateurs
-    ExtensionFilter & operator = ( const ExtensionFilter & other );
+    ExtensionFilter & operator = ( ExtensionFilter other );
     // Mode d'emploi :
     //
     // Contrat :
@@ -49,13 +53,11 @@ public:
     // Contrat :
     //
 
-    ExtensionFilter ( );
+    ExtensionFilter ( string extension );
     // Mode d'emploi :
     //
     // Contrat :
     //
-
-    ExtensionFilter (string extension);
 
     virtual ~ExtensionFilter ( );
     // Mode d'emploi :
@@ -67,9 +69,9 @@ public:
 
 protected:
 //----------------------------------------------------- Méthodes protégées
-
+    friend void swap(ExtensionFilter & first, ExtensionFilter & second);
 //----------------------------------------------------- Attributs protégés
-string extension;
+    std::string extension;
 
 };
 

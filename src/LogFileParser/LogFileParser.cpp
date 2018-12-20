@@ -17,7 +17,7 @@
 #include "LogFileParser.h"
 #include "../StringCache/StringCache.h"
 //------------------------------------------------------------- Constantes
-
+const std::string INTERNAL_URI = "http://intranet-if.insa-lyon.fr";
 //----------------------------------------------------------------- PUBLIC
 
 //----------------------------------------------------- Méthodes publiques
@@ -39,14 +39,23 @@ DirectedGraph<int, RefererEdge>* LogFileParser::Parse() const
                     valid = false;
                 }
             }
+
             if (valid) {
                 int uriIdentifier = StringCache::GetInstance().Put(request.GetUrl());
-                int refererIdentifier = StringCache::GetInstance().Put(request.GetReferer());
-
+                std::string referer = request.GetReferer();
+                if (referer.find(INTERNAL_URI) != std::string::npos)
+                {
+                    referer = referer.erase(0, INTERNAL_URI.size());
+                }
+                int refererIdentifier = StringCache::GetInstance().Put(referer);
                 RefererEdge sourceNode(refererIdentifier, true);
 
                 graph->Add(sourceNode, uriIdentifier);
             }
+        }
+        if (file.fail() && !file.eof())
+        {
+            throw std::range_error( "file corrupted ");
         }
     }
     else {

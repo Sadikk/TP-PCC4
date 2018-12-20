@@ -1,0 +1,8 @@
+warning : Time filter should be between 0 and 24
+Utilisation : analog[options] inputFile.log
+Analyse un fichier de logs Apache/Nginx
+Options:
+-h                Affiche cette aide
+-t hour           Inclut seulement les requêtes d'heures [hour; hour+1[. hour doit être compris entre 0 et 24
+-g output.dot     Exporte le graphe au format GraphViz dans le fichier de sortie
+-e                Exclut les requêtes css/js/images du traitement

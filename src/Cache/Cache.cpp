@@ -23,8 +23,8 @@
 //----------------------------------------------------- Méthodes publiques
 template <typename T>
 int Cache<T>::Put ( const T item )
-// Algorithme :
-//
+// Algorithme : Utilisation d'un double cache afin de rechercher rapidement si un élément est déjà
+// en cache ou non. (recherche par clé >>> recherche par valeur dans une u_map)
 {
     auto it = reverseCache.find(item);
     if(it != reverseCache.end())

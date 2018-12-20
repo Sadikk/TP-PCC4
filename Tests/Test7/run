@@ -1,1 +1,1 @@
-./exe
+../../bin/analog -g court.dot -e /tmp/anonyme.log

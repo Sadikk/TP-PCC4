@@ -28,7 +28,7 @@ static void shouldFilterJpg() {
   Request r;
   std::istringstream iss(lineWithJpg);
   iss >> r;
-  assert(jpgFilter.Check(r) == true);
+  assert(jpgFilter.Check(r) == false);
   std::cout << "Test completed" << std::endl;
 }
 
@@ -39,7 +39,7 @@ static void shouldFilterJs() {
   Request r;
   std::istringstream iss(lineWithJs);
   iss >> r;
-  assert(jsFilter.Check(r) == true);
+  assert(jsFilter.Check(r) == false);
   std::cout << "Test completed" << std::endl;
 }
 
@@ -50,7 +50,7 @@ static void shouldFilterCss() {
   Request r;
   std::istringstream iss(lineWithCss);
   iss >> r;
-  assert(cssFilter.Check(r) == true);
+  assert(cssFilter.Check(r) == false);
   std::cout << "Test completed" << std::endl;
 }
 
@@ -63,7 +63,7 @@ static void shouldNotFilter() {
   Request r;
   std::istringstream iss(lineWithCss);
   iss >> r;
-  assert(cssFilter.Check(r) == false && jsFilter.Check(r) == false && jpgFilter.Check(r) == false);
+  assert(cssFilter.Check(r) == true && jsFilter.Check(r) == true && jpgFilter.Check(r) == true);
   std::cout << "Test completed" << std::endl;
 }
 

@@ -1,0 +1,2 @@
+../../bin/analog -g court.dot -t 12 /tmp/anonyme.log
+
