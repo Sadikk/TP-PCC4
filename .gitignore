@@ -30,11 +30,5 @@
 *.exe
 *.app
 
-#Mac metadata
-.DS_Store
-*/.DS_Store
-*/*/.DS_Store
-*/*/*/.DS_Store
-
 
 bin/
